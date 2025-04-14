@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
+using System.Diagnostics;
 
 namespace Assets.Scripts.Models
 {
+	[DebuggerDisplay("{ToString()}")]
 	public class Number
 	{
 		public float Mantissa { get; set; } = 0;
@@ -43,6 +40,11 @@ namespace Assets.Scripts.Models
 		public static implicit operator Number(int value)
 		{
 			return new Number(value);
+		}
+
+		public override string ToString()
+		{
+			return $"{Mantissa}e{Exponent}";
 		}
 	}
 }
