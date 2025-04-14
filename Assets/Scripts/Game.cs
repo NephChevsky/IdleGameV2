@@ -9,8 +9,8 @@ public static class Game
 	public static List<Enemy> SpawnedEnemies { get; set; } = new();
 
     private static readonly float TickTime = 1f / Settings.GameEngine.TickRate;
-    private static float CurrentTime { get; set; } = 0f;
-    private static float EnemySpawnTimer { get; set; } = 1f;
+    private static float CurrentTime { get; set; }
+    private static float EnemySpawnTimer { get; set; }
 
     public static void Init()
     {
@@ -43,7 +43,7 @@ public static class Game
 		{
 			SpawnedEnemies.Add(EnemiesToSpawn[0]);
 			EnemiesToSpawn.RemoveAt(0);
-			EnemySpawnTimer -= 1f;
+			EnemySpawnTimer %= 1f;
 		}
 	}
 
@@ -158,6 +158,7 @@ public static class Game
 		Player.Position = 0;
 		EnemiesToSpawn.Clear();
 		SpawnedEnemies.Clear();
+		EnemySpawnTimer = 1f;
 
 		for (int i = 0; i < 10; i++)
 		{
