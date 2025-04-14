@@ -14,6 +14,8 @@ namespace Assets.Scripts.Models
 		public Number BaseHP { get; set; }
 		public Number CurrentHP { get; set; }
 		public Number MaxHP { get; set; }
+		public int AttackSpeed { get; set; }
+		public float AttackTimer { get; set; }
 		public int AttackRange { get; set; }
 		public Number AttackDamage { get; set; }
 		public int MovementSpeed { get; set; }
@@ -24,6 +26,8 @@ namespace Assets.Scripts.Models
 			BaseHP = new(baseHP);
 			CurrentHP = new(baseHP);
 			MaxHP = new(baseHP);
+			AttackSpeed = 100;
+			AttackTimer = 1f;
 			AttackRange = 100;
 			AttackDamage = 1;
 			MovementSpeed = movementSpeed;

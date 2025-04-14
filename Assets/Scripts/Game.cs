@@ -112,13 +112,15 @@ public static class Game
 
 	private static void Player_Attack()
 	{
-		if (SpawnedEnemies.Count > 0)
+		Player.AttackTimer += TickTime * Player.AttackSpeed / 100f;
+		if (Player.AttackTimer >= 1f && SpawnedEnemies.Count > 0 && Player.Position + Player.AttackRange / 2500f >= SpawnedEnemies[0].Position)
 		{
-			if (Player.Position + Player.AttackRange / 2500f >= SpawnedEnemies[0].Position)
+			if (Entity_Attack(Player, SpawnedEnemies[0]))
 			{
-				if (Entity_Attack(Player, SpawnedEnemies[0]))
+				SpawnedEnemies.Remove(SpawnedEnemies[0]);
+				if (SpawnedEnemies.Count == 0)
 				{
-					SpawnedEnemies.Remove(SpawnedEnemies[0]);
+					ResetMap();
 				}
 			}
 		}
@@ -128,7 +130,8 @@ public static class Game
 	{
 		for(int i = 0; i < SpawnedEnemies.Count; i++)
 		{
-			if (SpawnedEnemies[i].Position - SpawnedEnemies[i].AttackRange / 2500f <= Player.Position)
+			SpawnedEnemies[i].AttackTimer += TickTime * Player.AttackSpeed / 100f;
+			if (SpawnedEnemies[i].AttackTimer >= 1f && SpawnedEnemies[i].Position - SpawnedEnemies[i].AttackRange / 2500f <= Player.Position)
 			{
 				if (Entity_Attack(SpawnedEnemies[i], Player))
 				{
@@ -140,6 +143,7 @@ public static class Game
 
 	private static bool Entity_Attack(Entity attacker, Entity defender)
 	{
+		attacker.AttackTimer %= TickTime;
 		defender.CurrentHP -= attacker.AttackDamage;
 		if (defender.CurrentHP <= 0)
 		{
