@@ -10,7 +10,7 @@ public static class Game
 
     private static float TickTime = 1f / Settings.GameEngine.TickRate;
     private static float CurrentTime { get; set; } = 0f;
-    private static float EnemySpawnTimer { get; set; } = 0f;
+    private static float EnemySpawnTimer { get; set; } = 1f;
 
     public static void Init()
     {
@@ -73,7 +73,7 @@ public static class Game
     private static void SpawnEnemies()
     {
 		EnemySpawnTimer += TickTime;
-		if (EnemySpawnTimer > 1f && EnemiesToSpawn.Count > 0)
+		if (EnemySpawnTimer >= 1f && EnemiesToSpawn.Count > 0)
 		{
             SpawnedEnemies.Add(EnemiesToSpawn[0]);
             EnemiesToSpawn.RemoveAt(0);
