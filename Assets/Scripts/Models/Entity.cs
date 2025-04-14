@@ -20,16 +20,16 @@ namespace Assets.Scripts.Models
 		public Number AttackDamage { get; set; }
 		public int MovementSpeed { get; set; }
 
-		public Entity(Number baseHP, int movementSpeed)
+		public Entity(Number baseHP, Number attackDamage, int movementSpeed)
 		{
 			Position = this is Player ? 0 : 1;
-			BaseHP = new(baseHP);
+			BaseHP = baseHP;
 			CurrentHP = new(baseHP);
 			MaxHP = new(baseHP);
 			AttackSpeed = 100;
 			AttackTimer = 1f * 100f / Settings.GameEngine.TickRate;
 			AttackRange = 100;
-			AttackDamage = 1;
+			AttackDamage = attackDamage;
 			MovementSpeed = movementSpeed;
 		}
 	}
