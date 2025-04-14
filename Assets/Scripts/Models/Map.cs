@@ -140,7 +140,7 @@ namespace Assets.Scripts.Models
 
 		private void ResetMap()
 		{
-			Player = new (20, 100);
+			Player = new (100, 100);
 			EnemiesToSpawn.Clear();
 			SpawnedEnemies.Clear();
 			EnemySpawnTimer = 1f;
