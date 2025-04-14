@@ -18,6 +18,7 @@ public class GraphicalEngine : MonoBehaviour
         Player = InstantiateEntity();
 		Player.name = "Player";
 		Player.tag = "Player";
+		Player.GetComponent<EntityHandler>().IsPlayer = true;
         Enemies = new();
 
 		ScreenWidth = GetComponent<RectTransform>().rect.width * 0.95f;
@@ -26,6 +27,7 @@ public class GraphicalEngine : MonoBehaviour
     void Update()
     {
 		SetEntityPosition(Player, Game.Player.Position);
+		SetEntityLifeRatio(Player, (float) (Game.Player.CurrentHP / Game.Player.MaxHP));
 
 		for (int i = 0; i < Enemies.Count; i++)
 		{
@@ -51,6 +53,7 @@ public class GraphicalEngine : MonoBehaviour
 			}
 
 			SetEntityPosition(enemyGameObject, enemy.Position);
+			SetEntityLifeRatio(enemyGameObject, (float) (enemy.CurrentHP / enemy.MaxHP));
 		}
 	}
 
@@ -59,7 +62,13 @@ public class GraphicalEngine : MonoBehaviour
 		entity.transform.localPosition = new Vector2(-(ScreenWidth / 2f) + position * ScreenWidth, 0);
 	}
 
-    private GameObject InstantiateEntity()
+	private void SetEntityLifeRatio(GameObject entity, float lifeRatio)
+	{
+		entity.GetComponent<EntityHandler>().LifeRatio = lifeRatio;
+	}
+
+
+	private GameObject InstantiateEntity()
     {
         GameObject gameObject = Instantiate(EntityPrefab);
         gameObject.transform.SetParent(this.gameObject.transform);
