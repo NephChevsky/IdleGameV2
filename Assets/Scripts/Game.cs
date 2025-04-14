@@ -50,6 +50,10 @@ public static class Game
         {
             newPosition = 1f;
         }
+        if (newPosition < 0f)
+        {
+            newPosition = 0f;
+        }
         entity.Position = newPosition;
 	}
 
