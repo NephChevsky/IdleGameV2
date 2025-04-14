@@ -117,6 +117,16 @@ namespace Assets.Scripts.Models
 			return result;
 		}
 
+		public static Number operator *(Number a, Number b)
+		{
+			float newMantissa = a.Mantissa * b.Mantissa;
+			int newExponent = a.Exponent + b.Exponent;
+
+			Number result = new(newMantissa, newExponent);
+			result.Normalize();
+			return result;
+		}
+
 		public static bool operator <=(Number a, Number b)
 		{
 			int exponentDiff = a.Exponent - b.Exponent;
@@ -139,11 +149,11 @@ namespace Assets.Scripts.Models
 			int exponentDiff = a.Exponent - b.Exponent;
 			if (exponentDiff > 0)
 			{
-				return a.Mantissa >= b.Mantissa * (float)Math.Pow(10, exponentDiff);
+				return a.Mantissa * (float)Math.Pow(10, exponentDiff) >= b.Mantissa;
 			}
 			else if (exponentDiff < 0)
 			{
-				return a.Mantissa * (float)Math.Pow(10, -exponentDiff) >= b.Mantissa;
+				return a.Mantissa >= b.Mantissa * (float)Math.Pow(10, -exponentDiff);
 			}
 			else
 			{

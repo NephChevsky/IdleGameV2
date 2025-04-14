@@ -105,6 +105,10 @@ namespace Assets.Scripts.Models
 				if (Entity_Attack(Player, SpawnedEnemies[0]))
 				{
 					Player.CurrentXP += SpawnedEnemies[0].XPOnKill;
+					if (Player.CurrentXP >= Player.MaxXP)
+					{
+						Player.LevelUp();
+					}
 					SpawnedEnemies.Remove(SpawnedEnemies[0]);
 					if (SpawnedEnemies.Count == 0)
 					{

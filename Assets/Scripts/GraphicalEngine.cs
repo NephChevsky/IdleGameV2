@@ -9,8 +9,9 @@ public class GraphicalEngine : MonoBehaviour
 {
     public GameObject EntityPrefab;
 	public TMP_Text MapLevelPlaceHolder;
+	public TMP_Text PlayerLevelPlaceHolder;
 
-    private GameObject Player;
+	private GameObject Player;
     private List<GameObject> Enemies;
 
 	private float ScreenWidth;
@@ -29,6 +30,7 @@ public class GraphicalEngine : MonoBehaviour
     void Update()
     {
 		MapLevelPlaceHolder.text = Game.Map.Level.ToString();
+		PlayerLevelPlaceHolder.text = Game.Map.Player.Level.ToString();
 
 		SetEntityPosition(Player, Game.Map.Player.Position);
 		SetEntityLifeRatio(Player, (float) (Game.Map.Player.CurrentHP / Game.Map.Player.MaxHP));
