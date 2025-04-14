@@ -47,11 +47,11 @@ namespace Assets.Scripts.Models
 			Number result = new(a);
 
 			int exponentDiff = a.Exponent - b.Exponent;
-			if (exponentDiff > 0)
+			if (exponentDiff < 0)
 			{
 				result.Mantissa -= b.Mantissa * (float) Math.Pow(10, exponentDiff);
 			}
-			else if (exponentDiff < 0)
+			else if (exponentDiff > 0)
 			{
 				result.Mantissa = result.Mantissa / (float)Math.Pow(10, -exponentDiff) - b.Mantissa;
 				result.Exponent = b.Exponent;
