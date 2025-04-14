@@ -82,6 +82,28 @@ namespace Assets.Scripts.Models
 			return result;
 		}
 
+		public static Number operator +(Number a, Number b)
+		{
+			Number result = new(a);
+
+			int exponentDiff = a.Exponent - b.Exponent;
+			if (exponentDiff < 0)
+			{
+				result.Mantissa += b.Mantissa * (float)Math.Pow(10, exponentDiff);
+			}
+			else if (exponentDiff > 0)
+			{
+				result.Mantissa = result.Mantissa / (float)Math.Pow(10, -exponentDiff) + b.Mantissa;
+				result.Exponent = b.Exponent;
+			}
+			else
+			{
+				result.Mantissa += b.Mantissa;
+			}
+			result.Normalize();
+			return result;
+		}
+
 		public static Number operator /(Number a, Number b)
 		{
 			if (b.Mantissa == 0)

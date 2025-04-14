@@ -12,6 +12,7 @@ namespace Assets.Scripts.Models
 
 		public Map(int level)
 		{
+			Player = new(100, 1, 100);
 			Level = level;
 			ResetMap();
 		}
@@ -103,6 +104,7 @@ namespace Assets.Scripts.Models
 			{
 				if (Entity_Attack(Player, SpawnedEnemies[0]))
 				{
+					Player.CurrentXP += SpawnedEnemies[0].XPOnKill;
 					SpawnedEnemies.Remove(SpawnedEnemies[0]);
 					if (SpawnedEnemies.Count == 0)
 					{
@@ -140,7 +142,7 @@ namespace Assets.Scripts.Models
 
 		private void ResetMap()
 		{
-			Player = new (100, 1, 100);
+			Player.Reset();
 			EnemiesToSpawn.Clear();
 			SpawnedEnemies.Clear();
 			EnemySpawnTimer = 1f * 100f / Settings.GameEngine.TickRate;

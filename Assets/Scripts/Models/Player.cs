@@ -8,9 +8,16 @@ namespace Assets.Scripts.Models
 {
 	public class Player : Entity
 	{
+		public Number CurrentXP { get; set; } = 0;
+
 		public Player(Number hp, Number attackDamage,int movementSpeed) : base(hp, attackDamage, movementSpeed)
 		{
-			
+		}
+
+		public void Reset()
+		{
+			CurrentHP = new(MaxHP);
+			Position = 0;
 		}
 	}
 }
