@@ -151,7 +151,8 @@ namespace Assets.Scripts.Models
 			SpawnedEnemies.Clear();
 			EnemySpawnTimer = 1f * 100f / Settings.GameEngine.TickRate;
 
-			for (int i = 0; i < 9; i++)
+			int maxEnemy = 9 + Level / 10;
+			for (int i = 0; i < maxEnemy; i++)
 			{
 				Enemy enemy = Enemy.GenerateEnemy(Level);
 				enemy.Id = i;
