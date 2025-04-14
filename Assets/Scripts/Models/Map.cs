@@ -26,11 +26,11 @@ namespace Assets.Scripts.Models
 		private void SpawnEnemies()
 		{
 			EnemySpawnTimer += 1f / Settings.GameEngine.TickRate;
-			if (EnemySpawnTimer >= 1f && EnemiesToSpawn.Count > 0)
+			if (EnemySpawnTimer >= (1f * 100f / Settings.GameEngine.TickRate) && EnemiesToSpawn.Count > 0)
 			{
 				SpawnedEnemies.Add(EnemiesToSpawn[0]);
 				EnemiesToSpawn.RemoveAt(0);
-				EnemySpawnTimer %= 1f;
+				EnemySpawnTimer %= 1f * 100f / Settings.GameEngine.TickRate;
 			}
 		}
 
@@ -143,7 +143,7 @@ namespace Assets.Scripts.Models
 			Player = new (100, 100);
 			EnemiesToSpawn.Clear();
 			SpawnedEnemies.Clear();
-			EnemySpawnTimer = 1f;
+			EnemySpawnTimer = 1f * 100f / Settings.GameEngine.TickRate;
 
 			for (int i = 0; i < 9; i++)
 			{
