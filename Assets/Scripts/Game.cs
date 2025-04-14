@@ -21,13 +21,13 @@ public static class Game
 
     public static void Advance(float elapsedTime)
     {
-        while (CurrentTime + elapsedTime >= 0.01f)
+        while (CurrentTime + elapsedTime >= 1f / Settings.GameEngine.TickRate)
         {
             MoveEntity(Player);
 
-            CurrentTime += 0.01f;
-            CurrentTime %= 0.01f;
-            elapsedTime -= 0.01f;
+            CurrentTime += 1f / Settings.GameEngine.TickRate;
+            CurrentTime %= 1f / Settings.GameEngine.TickRate;
+            elapsedTime -= 1f / Settings.GameEngine.TickRate;
 		}
 
         CurrentTime += elapsedTime;
