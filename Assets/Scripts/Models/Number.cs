@@ -64,6 +64,40 @@ namespace Assets.Scripts.Models
 			return result;
 		}
 
+		public static bool operator <=(Number a, Number b)
+		{
+			int exponentDiff = a.Exponent - b.Exponent;
+			if (exponentDiff > 0)
+			{
+				return a.Mantissa <= b.Mantissa * (float)Math.Pow(10, exponentDiff);
+			}
+			else if (exponentDiff < 0)
+			{
+				return a.Mantissa * (float)Math.Pow(10, -exponentDiff) <= b.Mantissa;
+			}
+			else
+			{
+				return a.Mantissa <= b.Mantissa;
+			}
+		}
+
+		public static bool operator >=(Number a, Number b)
+		{
+			int exponentDiff = a.Exponent - b.Exponent;
+			if (exponentDiff > 0)
+			{
+				return a.Mantissa >= b.Mantissa * (float)Math.Pow(10, exponentDiff);
+			}
+			else if (exponentDiff < 0)
+			{
+				return a.Mantissa * (float)Math.Pow(10, -exponentDiff) >= b.Mantissa;
+			}
+			else
+			{
+				return a.Mantissa >= b.Mantissa;
+			}
+		}
+
 		public override string ToString()
 		{
 			return $"{Mantissa}e{Exponent}";

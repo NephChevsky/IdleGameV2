@@ -116,9 +116,16 @@ public static class Game
 
 	private static void Player_Attack()
 	{
-		if (Player.Position + Player.AttackRange / 2500f >= SpawnedEnemies[0].Position)
+		if (SpawnedEnemies.Count > 0)
 		{
-			SpawnedEnemies[0].CurrentHP -= Player.AttackDamage;
+			if (Player.Position + Player.AttackRange / 2500f >= SpawnedEnemies[0].Position)
+			{
+				SpawnedEnemies[0].CurrentHP -= Player.AttackDamage;
+				if (SpawnedEnemies[0].CurrentHP <= 0)
+				{
+					SpawnedEnemies.RemoveAt(0);
+				}
+			}
 		}
 	}
 }
