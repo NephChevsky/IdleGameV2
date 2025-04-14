@@ -2,11 +2,13 @@ using Assets.Scripts.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class GraphicalEngine : MonoBehaviour
 {
     public GameObject EntityPrefab;
+	public TMP_Text MapLevelPlaceHolder;
 
     private GameObject Player;
     private List<GameObject> Enemies;
@@ -26,6 +28,8 @@ public class GraphicalEngine : MonoBehaviour
 
     void Update()
     {
+		MapLevelPlaceHolder.text = Game.Map.Level.ToString();
+
 		SetEntityPosition(Player, Game.Map.Player.Position);
 		SetEntityLifeRatio(Player, (float) (Game.Map.Player.CurrentHP / Game.Map.Player.MaxHP));
 
