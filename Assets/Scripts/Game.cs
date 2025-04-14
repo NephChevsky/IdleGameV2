@@ -5,23 +5,17 @@ using UnityEngine;
 public static class Game
 {
 	public static Player Player { get; set; }
-	public static List<Enemy> EnemiesToSpawn { get; set; }
-    public static List<Enemy> SpawnedEnemies { get; set; }
+	public static List<Enemy> EnemiesToSpawn { get; set; } = new();
+	public static List<Enemy> SpawnedEnemies { get; set; } = new();
 
-    private static float TickTime = 1f / Settings.GameEngine.TickRate;
+    private static readonly float TickTime = 1f / Settings.GameEngine.TickRate;
     private static float CurrentTime { get; set; } = 0f;
     private static float EnemySpawnTimer { get; set; } = 1f;
 
     public static void Init()
     {
-        Player = new(10, 100);
-		EnemiesToSpawn = new();
-        SpawnedEnemies = new();
-
-        for (int i = 0; i < 10; i++)
-        {
-			EnemiesToSpawn.Add(new Enemy(i, i == 9 ? 5 : 1, i == 9 ? 0 : 100));
-        }
+		Player = new(20, 100);
+		ResetMap();
     }
 
     public static void Advance(float elapsedTime)
@@ -112,6 +106,8 @@ public static class Game
 	private static void Everyone_Attack()
 	{
 		Player_Attack();
+
+		Enemies_Attack();
 	}
 
 	private static void Player_Attack()
@@ -120,12 +116,48 @@ public static class Game
 		{
 			if (Player.Position + Player.AttackRange / 2500f >= SpawnedEnemies[0].Position)
 			{
-				SpawnedEnemies[0].CurrentHP -= Player.AttackDamage;
-				if (SpawnedEnemies[0].CurrentHP <= 0)
+				if (Entity_Attack(Player, SpawnedEnemies[0]))
 				{
-					SpawnedEnemies.RemoveAt(0);
+					SpawnedEnemies.Remove(SpawnedEnemies[0]);
 				}
 			}
+		}
+	}
+
+	private static void Enemies_Attack()
+	{
+		for(int i = 0; i < SpawnedEnemies.Count; i++)
+		{
+			if (SpawnedEnemies[i].Position - SpawnedEnemies[i].AttackRange / 2500f <= Player.Position)
+			{
+				if (Entity_Attack(SpawnedEnemies[i], Player))
+				{
+					ResetMap();
+				}
+			}
+		}
+	}
+
+	private static bool Entity_Attack(Entity attacker, Entity defender)
+	{
+		defender.CurrentHP -= attacker.AttackDamage;
+		if (defender.CurrentHP <= 0)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	private static void ResetMap()
+	{
+		Player.CurrentHP = Player.MaxHP;
+		Player.Position = 0;
+		EnemiesToSpawn.Clear();
+		SpawnedEnemies.Clear();
+
+		for (int i = 0; i < 10; i++)
+		{
+			EnemiesToSpawn.Add(new Enemy(i, i == 9 ? 5 : 1, i == 9 ? 0 : 100));
 		}
 	}
 }
