@@ -145,10 +145,16 @@ namespace Assets.Scripts.Models
 			SpawnedEnemies.Clear();
 			EnemySpawnTimer = 1f;
 
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 9; i++)
 			{
-				EnemiesToSpawn.Add(new Enemy(i, i == 9 ? 5 : 1, i == 9 ? 0 : 100));
+				Enemy enemy = Enemy.GenerateEnemy(Level);
+				enemy.Id = i;
+				EnemiesToSpawn.Add(enemy);
 			}
+
+			Enemy boss = Enemy.GenerateBoss(Level);
+			boss.Id = EnemiesToSpawn.Count;
+			EnemiesToSpawn.Add(boss);
 		}
 
 		private void GoToNextLevel()

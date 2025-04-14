@@ -16,6 +16,13 @@ namespace Assets.Scripts.Models
 			Normalize();
 		}
 
+		public Number(double value)
+		{
+			Mantissa = (float) value;
+			Exponent = 0;
+			Normalize();
+		}
+
 		public Number(Number value)
 		{
 			Mantissa = value.Mantissa;
@@ -44,6 +51,11 @@ namespace Assets.Scripts.Models
 		}
 
 		public static implicit operator Number(int value)
+		{
+			return new Number(value);
+		}
+
+		public static implicit operator Number(double value)
 		{
 			return new Number(value);
 		}
