@@ -17,7 +17,7 @@ public class GraphicalEngine : MonoBehaviour
         float border = width * 0.025f;
         width -= border * 2;
 
-        Player.transform.localPosition = new Vector2(- (width / 2f) + Game.Player.Position * width / 100, 0);
+        Player.transform.localPosition = new Vector2(- (width / 2f) + Game.Player.Position * width, 0);
     }
 
     private GameObject InstantiateEntity()

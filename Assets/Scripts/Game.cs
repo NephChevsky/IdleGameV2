@@ -36,6 +36,11 @@ public static class Game
     private static void MoveEntity(Entity entity)
     {
 		int direction = entity is Player ? 1 : -1;
-		entity.Position += direction * entity.MovementSpeed / 1000f;
+        float newPosition = entity.Position + direction * entity.MovementSpeed / 100000f;
+        if (newPosition > 1f)
+        {
+            newPosition = 1f;
+        }
+        entity.Position = newPosition;
 	}
 }
