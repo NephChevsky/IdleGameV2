@@ -42,42 +42,64 @@ public static class Game
         CurrentTime += elapsedTime;
 	}
 
-    private static void MoveEntity(Entity entity)
+	private static void SpawnEnemies()
+	{
+		EnemySpawnTimer += TickTime;
+		if (EnemySpawnTimer >= 1f && EnemiesToSpawn.Count > 0)
+		{
+			SpawnedEnemies.Add(EnemiesToSpawn[0]);
+			EnemiesToSpawn.RemoveAt(0);
+			EnemySpawnTimer -= 1f;
+		}
+	}
+
+	private static void MovePlayer()
+	{
+		MoveEntity(Player);
+	}
+
+	private static void MoveEnemies()
+	{
+		foreach (Enemy enemy in SpawnedEnemies)
+		{
+			MoveEntity(enemy);
+		}
+	}
+
+	private static void MoveEntity(Entity entity)
     {
 		int direction = entity is Player ? 1 : -1;
         float newPosition = entity.Position + direction * entity.MovementSpeed / 100000f;
+
         if (newPosition > 1f)
         {
             newPosition = 1f;
         }
+
         if (newPosition < 0f)
         {
             newPosition = 0f;
         }
-        entity.Position = newPosition;
-	}
 
-    private static void MovePlayer()
-    {
-        MoveEntity(Player);
-    }
-
-    private static void MoveEnemies()
-    {
-        foreach (Enemy enemy in SpawnedEnemies)
-        {
-            MoveEntity(enemy);
-        }
-    }
-
-    private static void SpawnEnemies()
-    {
-		EnemySpawnTimer += TickTime;
-		if (EnemySpawnTimer >= 1f && EnemiesToSpawn.Count > 0)
+		if (entity is Player && SpawnedEnemies.Count > 0 && newPosition >= SpawnedEnemies[0].Position - Settings.GameEngine.EntityCollisionOffset)
 		{
-            SpawnedEnemies.Add(EnemiesToSpawn[0]);
-            EnemiesToSpawn.RemoveAt(0);
-			EnemySpawnTimer -= 1f;
+			newPosition = SpawnedEnemies[0].Position - Settings.GameEngine.EntityCollisionOffset;
 		}
+
+		if (entity is Enemy enemy)
+		{
+			if (newPosition <= Player.Position + Settings.GameEngine.EntityCollisionOffset)
+			{
+				newPosition = Player.Position + Settings.GameEngine.EntityCollisionOffset;
+			}
+
+			int index = SpawnedEnemies.IndexOf(enemy);
+			if (index > 0 && newPosition <= SpawnedEnemies[index-1].Position + Settings.GameEngine.EntityCollisionOffset)
+			{
+				newPosition = SpawnedEnemies[index - 1].Position + Settings.GameEngine.EntityCollisionOffset;
+			}
+		}
+
+		entity.Position = newPosition;
 	}
 }
