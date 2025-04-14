@@ -1,3 +1,7 @@
+using Assets.Scripts.Models;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GraphicalEngine : MonoBehaviour
@@ -5,20 +9,55 @@ public class GraphicalEngine : MonoBehaviour
     public GameObject EntityPrefab;
 
     private GameObject Player;
+    private List<GameObject> Enemies;
+
+	private float ScreenWidth;
 
     void Start()
     {
         Player = InstantiateEntity();
-    }
+		Player.name = "Player";
+		Player.tag = "Player";
+        Enemies = new();
+
+		ScreenWidth = GetComponent<RectTransform>().rect.width * 0.95f;
+	}
 
     void Update()
     {
-        float width = GetComponent<RectTransform>().rect.width;
-        float border = width * 0.025f;
-        width -= border * 2;
+		SetEntityPosition(Player, Game.Player.Position);
 
-        Player.transform.localPosition = new Vector2(- (width / 2f) + Game.Player.Position * width, 0);
-    }
+		for (int i = 0; i < Enemies.Count; i++)
+		{
+			int id = int.Parse(Enemies[i].name.Split(" ")[1]);
+			Enemy enemy = Game.SpawnedEnemies.Where(x => x.Id == id).FirstOrDefault();
+			if (enemy == null)
+			{
+				Destroy(Enemies[i]);
+				Enemies.RemoveAt(i);
+				i--;
+			}
+		}
+
+		foreach (Enemy enemy in Game.SpawnedEnemies)
+		{
+			GameObject enemyGameObject = Enemies.Where(x => x.name == $"Enemy {enemy.Id}").FirstOrDefault();
+			if (enemyGameObject == null)
+			{
+				enemyGameObject = InstantiateEntity();
+				enemyGameObject.name = $"Enemy {enemy.Id}";
+				enemyGameObject.tag = "Enemy";
+				Enemies.Add(enemyGameObject);
+			}
+
+			SetEntityPosition(enemyGameObject, enemy.Position);
+		}
+	}
+
+	private void SetEntityPosition(GameObject entity, float position)
+	{
+		entity.transform.localPosition = new Vector2(-(ScreenWidth / 2f) + position * ScreenWidth, 0);
+	}
 
     private GameObject InstantiateEntity()
     {

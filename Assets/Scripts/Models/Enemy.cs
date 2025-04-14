@@ -8,9 +8,11 @@ namespace Assets.Scripts.Models
 {
 	public class Enemy : Entity
 	{
-		public Enemy(Number hp) : base(hp)
-		{
+		public int Id { get; set; }
 
+		public Enemy(int id, Number hp) : base(hp)
+		{
+			Id = id;
 		}
 	}
 }

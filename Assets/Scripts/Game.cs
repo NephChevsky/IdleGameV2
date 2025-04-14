@@ -4,30 +4,37 @@ using UnityEngine;
 
 public static class Game
 {
-    private static float CurrentTime { get; set; }
-    public static Player Player { get; set; }
-    private static List<Enemy> Enemies { get; set; }
+	public static Player Player { get; set; }
+	public static List<Enemy> EnemiesToSpawn { get; set; }
+    public static List<Enemy> SpawnedEnemies { get; set; }
+
+    private static float TickTime = 1f / Settings.GameEngine.TickRate;
+    private static float CurrentTime { get; set; } = 0f;
+    private static float EnemySpawnTimer { get; set; } = 0f;
 
     public static void Init()
     {
         Player = new(10);
-        Enemies = new();
+		EnemiesToSpawn = new();
+        SpawnedEnemies = new();
 
         for (int i = 0; i < 10; i++)
         {
-            Enemies.Add(new Enemy(i == 9 ? 5 : 1));
+			EnemiesToSpawn.Add(new Enemy(i, i == 9 ? 5 : 1));
         }
     }
 
     public static void Advance(float elapsedTime)
     {
-        while (CurrentTime + elapsedTime >= 1f / Settings.GameEngine.TickRate)
+		while (CurrentTime + elapsedTime >= TickTime)
         {
             MoveEntity(Player);
 
-            CurrentTime += 1f / Settings.GameEngine.TickRate;
-            CurrentTime %= 1f / Settings.GameEngine.TickRate;
-            elapsedTime -= 1f / Settings.GameEngine.TickRate;
+            SpawnEnemies();
+
+			CurrentTime += TickTime;
+            CurrentTime %= TickTime;
+            elapsedTime -= TickTime;
 		}
 
         CurrentTime += elapsedTime;
@@ -42,5 +49,16 @@ public static class Game
             newPosition = 1f;
         }
         entity.Position = newPosition;
+	}
+
+    private static void SpawnEnemies()
+    {
+		EnemySpawnTimer += TickTime;
+		if (EnemySpawnTimer > 1f && EnemiesToSpawn.Count > 0)
+		{
+            SpawnedEnemies.Add(EnemiesToSpawn[0]);
+            EnemiesToSpawn.RemoveAt(0);
+			EnemySpawnTimer -= 1f;
+		}
 	}
 }
