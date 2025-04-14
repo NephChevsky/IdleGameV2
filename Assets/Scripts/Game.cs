@@ -21,6 +21,21 @@ public static class Game
 
     public static void Advance(float elapsedTime)
     {
-        
+        while (CurrentTime + elapsedTime >= 0.01f)
+        {
+            MoveEntity(Player);
+
+            CurrentTime += 0.01f;
+            CurrentTime %= 0.01f;
+            elapsedTime -= 0.01f;
+		}
+
+        CurrentTime += elapsedTime;
+	}
+
+    private static void MoveEntity(Entity entity)
+    {
+		int direction = entity is Player ? 1 : -1;
+		entity.Position += direction * entity.MovementSpeed / 1000f;
 	}
 }
