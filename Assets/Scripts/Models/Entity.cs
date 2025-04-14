@@ -27,7 +27,7 @@ namespace Assets.Scripts.Models
 			CurrentHP = new(baseHP);
 			MaxHP = new(baseHP);
 			AttackSpeed = 100;
-			AttackTimer = 1f;
+			AttackTimer = 1f * 100f / Settings.GameEngine.TickRate;
 			AttackRange = 100;
 			AttackDamage = 1;
 			MovementSpeed = movementSpeed;

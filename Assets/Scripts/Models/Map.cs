@@ -30,7 +30,7 @@ namespace Assets.Scripts.Models
 			{
 				SpawnedEnemies.Add(EnemiesToSpawn[0]);
 				EnemiesToSpawn.RemoveAt(0);
-				EnemySpawnTimer %= 1f * 100f / Settings.GameEngine.TickRate;
+				EnemySpawnTimer = 0f;
 			}
 		}
 
@@ -98,8 +98,8 @@ namespace Assets.Scripts.Models
 
 		private void Player_Attack()
 		{
-			Player.AttackTimer += 1f / Settings.GameEngine.TickRate * Player.AttackSpeed / 100f;
-			if (Player.AttackTimer >= 1f && SpawnedEnemies.Count > 0 && Player.Position + Player.AttackRange / 2500f >= SpawnedEnemies[0].Position)
+			Player.AttackTimer += (1f / Settings.GameEngine.TickRate) * Player.AttackSpeed / 100f;
+			if (Player.AttackTimer >= (1f * 100f / Settings.GameEngine.TickRate) && SpawnedEnemies.Count > 0 && Player.Position + Player.AttackRange / 2500f >= SpawnedEnemies[0].Position)
 			{
 				if (Entity_Attack(Player, SpawnedEnemies[0]))
 				{
@@ -116,8 +116,8 @@ namespace Assets.Scripts.Models
 		{
 			for (int i = 0; i < SpawnedEnemies.Count; i++)
 			{
-				SpawnedEnemies[i].AttackTimer += 1f / Settings.GameEngine.TickRate * Player.AttackSpeed / 100f;
-				if (SpawnedEnemies[i].AttackTimer >= 1f && SpawnedEnemies[i].Position - SpawnedEnemies[i].AttackRange / 2500f <= Player.Position)
+				SpawnedEnemies[i].AttackTimer += (1f / Settings.GameEngine.TickRate) * Player.AttackSpeed / 100f;
+				if (SpawnedEnemies[i].AttackTimer >= (1f * 100f / Settings.GameEngine.TickRate) && SpawnedEnemies[i].Position - SpawnedEnemies[i].AttackRange / 2500f <= Player.Position)
 				{
 					if (Entity_Attack(SpawnedEnemies[i], Player))
 					{
@@ -129,7 +129,7 @@ namespace Assets.Scripts.Models
 
 		private bool Entity_Attack(Entity attacker, Entity defender)
 		{
-			attacker.AttackTimer %= 1f / Settings.GameEngine.TickRate;
+			attacker.AttackTimer = 0f;
 			defender.CurrentHP -= attacker.AttackDamage;
 			if (defender.CurrentHP <= 0)
 			{
