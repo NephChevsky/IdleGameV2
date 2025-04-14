@@ -14,13 +14,13 @@ public static class Game
 
     public static void Init()
     {
-        Player = new(10);
+        Player = new(10, 100);
 		EnemiesToSpawn = new();
         SpawnedEnemies = new();
 
         for (int i = 0; i < 10; i++)
         {
-			EnemiesToSpawn.Add(new Enemy(i, i == 9 ? 5 : 1));
+			EnemiesToSpawn.Add(new Enemy(i, i == 9 ? 5 : 1, i == 9 ? 0 : 100));
         }
     }
 
@@ -28,9 +28,11 @@ public static class Game
     {
 		while (CurrentTime + elapsedTime >= TickTime)
         {
-            MoveEntity(Player);
+			SpawnEnemies();
 
-            SpawnEnemies();
+			MovePlayer();
+
+            MoveEnemies();
 
 			CurrentTime += TickTime;
             CurrentTime %= TickTime;
@@ -50,6 +52,19 @@ public static class Game
         }
         entity.Position = newPosition;
 	}
+
+    private static void MovePlayer()
+    {
+        MoveEntity(Player);
+    }
+
+    private static void MoveEnemies()
+    {
+        foreach (Enemy enemy in SpawnedEnemies)
+        {
+            MoveEntity(enemy);
+        }
+    }
 
     private static void SpawnEnemies()
     {

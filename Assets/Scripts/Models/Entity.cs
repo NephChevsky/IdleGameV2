@@ -16,12 +16,12 @@ namespace Assets.Scripts.Models
 		public float Position { get; set; }
 		public int MovementSpeed { get; set; }
 
-		public Entity(Number baseHP)
+		public Entity(Number baseHP, int movementSpeed)
 		{
 			BaseHP = new(baseHP);
 			CurrentHP = new(baseHP);
 			MaxHP = new(baseHP);
-			MovementSpeed = 100;
+			MovementSpeed = movementSpeed;
 			Position = this is Player ? 0 : 1;
 		}
 	}

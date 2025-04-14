@@ -8,7 +8,7 @@ namespace Assets.Scripts.Models
 {
 	public class Player : Entity
 	{
-		public Player(Number hp) : base(hp)
+		public Player(Number hp, int movementSpeed) : base(hp, movementSpeed)
 		{
 			
 		}

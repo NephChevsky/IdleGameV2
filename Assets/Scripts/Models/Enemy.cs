@@ -10,7 +10,7 @@ namespace Assets.Scripts.Models
 	{
 		public int Id { get; set; }
 
-		public Enemy(int id, Number hp) : base(hp)
+		public Enemy(int id, Number hp, int movementSpeed) : base(hp, movementSpeed)
 		{
 			Id = id;
 		}
