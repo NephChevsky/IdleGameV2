@@ -30,9 +30,9 @@ public static class Game
         {
 			SpawnEnemies();
 
-			MovePlayer();
+			Everyone_Move();
 
-            MoveEnemies();
+			Everyone_Attack();
 
 			CurrentTime += TickTime;
             CurrentTime %= TickTime;
@@ -53,20 +53,26 @@ public static class Game
 		}
 	}
 
-	private static void MovePlayer()
+	private static void Everyone_Move()
 	{
-		MoveEntity(Player);
+		Player_Move();
+		Enemies_Move();
 	}
 
-	private static void MoveEnemies()
+	private static void Player_Move()
+	{
+		Entity_Move(Player);
+	}
+
+	private static void Enemies_Move()
 	{
 		foreach (Enemy enemy in SpawnedEnemies)
 		{
-			MoveEntity(enemy);
+			Entity_Move(enemy);
 		}
 	}
 
-	private static void MoveEntity(Entity entity)
+	private static void Entity_Move(Entity entity)
     {
 		int direction = entity is Player ? 1 : -1;
         float newPosition = entity.Position + direction * entity.MovementSpeed / 100000f;
@@ -101,5 +107,18 @@ public static class Game
 		}
 
 		entity.Position = newPosition;
+	}
+
+	private static void Everyone_Attack()
+	{
+		Player_Attack();
+	}
+
+	private static void Player_Attack()
+	{
+		if (Player.Position + Player.AttackRange / 2500f >= SpawnedEnemies[0].Position)
+		{
+			SpawnedEnemies[0].CurrentHP -= Player.AttackDamage;
+		}
 	}
 }
