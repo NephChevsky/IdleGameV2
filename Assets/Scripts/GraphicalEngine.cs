@@ -26,13 +26,13 @@ public class GraphicalEngine : MonoBehaviour
 
     void Update()
     {
-		SetEntityPosition(Player, Game.Player.Position);
-		SetEntityLifeRatio(Player, (float) (Game.Player.CurrentHP / Game.Player.MaxHP));
+		SetEntityPosition(Player, Game.Map.Player.Position);
+		SetEntityLifeRatio(Player, (float) (Game.Map.Player.CurrentHP / Game.Map.Player.MaxHP));
 
 		for (int i = 0; i < Enemies.Count; i++)
 		{
 			int id = int.Parse(Enemies[i].name.Split(" ")[1]);
-			Enemy enemy = Game.SpawnedEnemies.Where(x => x.Id == id).FirstOrDefault();
+			Enemy enemy = Game.Map.SpawnedEnemies.Where(x => x.Id == id).FirstOrDefault();
 			if (enemy == null)
 			{
 				Destroy(Enemies[i]);
@@ -41,7 +41,7 @@ public class GraphicalEngine : MonoBehaviour
 			}
 		}
 
-		foreach (Enemy enemy in Game.SpawnedEnemies)
+		foreach (Enemy enemy in Game.Map.SpawnedEnemies)
 		{
 			GameObject enemyGameObject = Enemies.Where(x => x.name == $"Enemy {enemy.Id}").FirstOrDefault();
 			if (enemyGameObject == null)
