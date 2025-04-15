@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class ArmoryHandler : MonoBehaviour
 {
@@ -7,13 +8,25 @@ public class ArmoryHandler : MonoBehaviour
     
     private readonly List<GameObject> Inventory = new();
 
-    void Start()
+	private GameObject Helm;
+	private GameObject Amulet;
+	private GameObject Gloves;
+	private GameObject Chest;
+	private GameObject RingL;
+	private GameObject Belt;
+	private GameObject RingR;
+	private GameObject Pants;
+	private GameObject Boots;
+	private GameObject MainHand;
+	private GameObject OffHand;
+
+	void Start()
     {
         Rect rect = GetComponent<RectTransform>().rect;
 		float width = rect.width * 0.95f;
         float height = rect.height * 0.95f;
-        int xOffset = 10;
-        int yOffset = 32;
+        float xOffset = 10;
+        float yOffset = 32;
         for (int i = 0; i < 50; i++)
         {
             GameObject item = Instantiate(ItemPrefab);
@@ -29,7 +42,69 @@ public class ArmoryHandler : MonoBehaviour
                 xOffset = 10;
             }
         }
-    }
+
+		Helm = Instantiate(ItemPrefab);
+		Amulet = Instantiate(ItemPrefab);
+		Gloves = Instantiate(ItemPrefab);
+		Chest = Instantiate(ItemPrefab);
+		RingL = Instantiate(ItemPrefab);
+		Belt = Instantiate(ItemPrefab);
+		RingR = Instantiate(ItemPrefab);
+		Pants = Instantiate(ItemPrefab);
+		Boots = Instantiate(ItemPrefab);
+		MainHand = Instantiate(ItemPrefab);
+		OffHand = Instantiate(ItemPrefab);
+
+		Helm.name = "Helm";
+		Amulet.name = "Amulet";
+		Gloves.name = "Gloves";
+		Chest.name = "Chest";
+		RingL.name = "RingL";
+		Belt.name = "Belt";
+		RingR.name = "RingR";
+		Pants.name = "Pants";
+		Boots.name = "Boots";
+		MainHand.name = "MainHand";
+		OffHand.name = "OffHand";
+
+		Helm.transform.SetParent(transform);
+		Amulet.transform.SetParent(transform);
+		Gloves.transform.SetParent(transform);
+		Chest.transform.SetParent(transform);
+		RingL.transform.SetParent(transform);
+		Belt.transform.SetParent(transform);
+		RingR.transform.SetParent(transform);
+		Pants.transform.SetParent(transform);
+		Boots.transform.SetParent(transform);
+		MainHand.transform.SetParent(transform);
+		OffHand.transform.SetParent(transform);
+
+		Helm.transform.localScale = Vector3.one;
+		Amulet.transform.localScale = Vector3.one;
+		Gloves.transform.localScale = Vector3.one;
+		Chest.transform.localScale = Vector3.one;
+		RingL.transform.localScale = Vector3.one;
+		Belt.transform.localScale = Vector3.one;
+		RingR.transform.localScale = Vector3.one;
+		Pants.transform.localScale = Vector3.one;
+		Boots.transform.localScale = Vector3.one;
+		MainHand.transform.localScale = Vector3.one;
+		OffHand.transform.localScale = Vector3.one;
+
+		xOffset = width * 3f / 8f;
+		yOffset = height / 2f - 50;
+		Helm.transform.localPosition = new Vector2(xOffset, yOffset);
+		Amulet.transform.localPosition = new Vector2(xOffset + 104, yOffset);
+		Gloves.transform.localPosition = new Vector2(xOffset - 104, yOffset - 104);
+		Chest.transform.localPosition = new Vector2(xOffset, yOffset - 104);
+		RingL.transform.localPosition = new Vector2(xOffset - 104, yOffset - 104 * 2);
+		Belt.transform.localPosition = new Vector2(xOffset, yOffset - 104 * 2);
+		RingR.transform.localPosition = new Vector2(xOffset + 104, yOffset - 104 * 2);
+		Pants.transform.localPosition = new Vector2(xOffset, yOffset - 104 * 3);
+		Boots.transform.localPosition = new Vector2(xOffset, yOffset - 104 * 4);
+		MainHand.transform.localPosition = new Vector2(xOffset - 104, yOffset - 104 * 3);
+		OffHand.transform.localPosition = new Vector2(xOffset + 104, yOffset - 104 * 3);
+	}
 
     void Update()
     {
