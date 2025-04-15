@@ -27,6 +27,15 @@ public static class Game
 		{
 			Inventory = new();
 		}
+		if (PlayerPrefs.HasKey("Equipment"))
+		{
+			string json = PlayerPrefs.GetString("Equipment");
+			Equipment = JsonConvert.DeserializeObject<List<Item>>(json);
+		}
+		else
+		{
+			Inventory = new();
+		}
 		Map = new(mapLevel, playerLevel);
     }
 
@@ -107,6 +116,8 @@ public static class Game
         PlayerPrefs.SetInt("Map:Player:Level", Map.Player.Level);
 		string json = JsonConvert.SerializeObject(Inventory);
 		PlayerPrefs.SetString("Inventory", json);
+		json = JsonConvert.SerializeObject(Equipment);
+		PlayerPrefs.SetString("Equipment", json);
 		PlayerPrefs.Save();
 		Debug.Log("Game saved");
 	}
