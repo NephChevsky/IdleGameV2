@@ -41,16 +41,16 @@ public class GraphicalEngine : MonoBehaviour
 			deathScreenAlphaRatio = 1f;
 			if (Game.Map.DeathTimer <= 0.5f * 100f / Settings.GameEngine.TickRate)
 			{
-				deathScreenAlphaRatio = Game.Map.DeathTimer;
+				deathScreenAlphaRatio = Game.Map.DeathTimer * 2f;
 			}
 		}
 		Image image = DeathScreen.GetComponentInChildren<Image>();
 		Color color = image.color;
-		color.a = Game.Map.DeathTimer;
+		color.a = deathScreenAlphaRatio;
 		image.color = color;
 		TMP_Text text = DeathScreen.GetComponentInChildren<TMP_Text>();
 		color = text.color;
-		color.a = Game.Map.DeathTimer;
+		color.a = deathScreenAlphaRatio;
 		text.color = color;
 
 		SetEntityPosition(Player, Game.Map.Player.Position);
