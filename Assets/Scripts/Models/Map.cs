@@ -11,10 +11,10 @@ namespace Assets.Scripts.Models
 		public float DeathTimer { get; set; } = -1f;
 		private float EnemySpawnTimer { get; set; }
 
-		public Map(int level)
+		public Map(int mapLevel, int playerLevel)
 		{
-			Player = new(100, 1, 100);
-			Level = level;
+			Player = new(playerLevel);
+			Level = mapLevel;
 			ResetMap();
 		}
 

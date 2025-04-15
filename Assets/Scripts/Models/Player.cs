@@ -12,8 +12,9 @@ namespace Assets.Scripts.Models
 		public Number CurrentXP { get; set; } = 0;
 		public Number MaxXP { get; set; } = 20;
 
-		public Player(Number hp, Number attackDamage,int movementSpeed) : base(hp, attackDamage, movementSpeed)
+		public Player(int level) : base(100, 1, 100)
 		{
+			Level = level;
 		}
 
 		public void LevelUp()
