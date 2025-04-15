@@ -264,8 +264,9 @@ GameObject:
   - component: {fileID: 227204548}
   - component: {fileID: 227204550}
   - component: {fileID: 227204549}
+  - component: {fileID: 227204551}
   m_Layer: 0
-  m_Name: InventoryPanel
+  m_Name: ArmoryPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -328,6 +329,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 227204547}
   m_CullTransparentMesh: 1
+--- !u!114 &227204551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227204547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebdb26fb49248284b85119915865dfa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemPrefab: {fileID: 4314079023157720323, guid: 53ac84e30109214428eb44276a15153f, type: 3}
 --- !u!1 &247550845
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,7 +704,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ButtonPrefab: {fileID: 142351809597723464, guid: 5c6a183a15803e64e8d8234da8bfd8b0, type: 3}
   AdventureTab: {fileID: 200549375}
-  InventoryTab: {fileID: 227204547}
+  ArmoryTab: {fileID: 227204547}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

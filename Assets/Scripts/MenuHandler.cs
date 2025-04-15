@@ -9,12 +9,12 @@ public class MenuHandler : MonoBehaviour
 {
     public GameObject ButtonPrefab;
     public GameObject AdventureTab;
-    public GameObject InventoryTab;
+    public GameObject ArmoryTab;
 
     private readonly List<string> Menus = new()
     {
         "Adventure",
-        "Inventory"
+        "Armory"
     };
 
     void Start()
@@ -39,6 +39,6 @@ public class MenuHandler : MonoBehaviour
     private void SwitchToTab(string name)
     {
         AdventureTab.SetActive(name == "Adventure");
-        InventoryTab.SetActive(name == "Inventory");
+		ArmoryTab.SetActive(name == "Armory");
     }
 }
