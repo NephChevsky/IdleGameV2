@@ -131,7 +131,7 @@ public class ArmoryHandler : MonoBehaviour
 		Chest.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Chest);
 		RingL.GetComponent<ItemHandler>().Item = Game.Equipment.Where(x => x.Type == ItemType.Ring).FirstOrDefault();
 		Belt.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Belt);
-		RingL.GetComponent<ItemHandler>().Item = Game.Equipment.Where(x => x.Type == ItemType.Ring).Skip(1).FirstOrDefault();
+		RingR.GetComponent<ItemHandler>().Item = Game.Equipment.Where(x => x.Type == ItemType.Ring).Skip(1).FirstOrDefault();
 		Pants.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Pants);
 		Boots.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Boots);
 		MainHand.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.MainHand);
