@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
+	[DebuggerDisplay("{Type.ToString()}")]
 	public class Item
 	{
 		public Guid Id { get; set; }
