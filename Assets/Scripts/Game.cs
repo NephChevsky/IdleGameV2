@@ -5,6 +5,7 @@ using UnityEngine;
 public static class Game
 {
 	public static Map Map { get; set; }
+    public static List<Item> Inventory { get; set; } = new();
 
     private static readonly float TickTime = 1f / Settings.GameEngine.TickRate;
     private static float CurrentTime { get; set; }

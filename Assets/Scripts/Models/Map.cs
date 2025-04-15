@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
@@ -120,6 +121,14 @@ namespace Assets.Scripts.Models
 					{
 						Player.LevelUp();
 					}
+
+					bool drop = Random.Range(0f, 1f) >= 0.95f;
+					if (drop && Game.Inventory.Count < 50)
+					{
+						Item item = Item.Generate();
+						Game.Inventory.Add(item);
+					}
+
 					SpawnedEnemies.Remove(SpawnedEnemies[0]);
 					if (SpawnedEnemies.Count == 0)
 					{
