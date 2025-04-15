@@ -9,6 +9,11 @@ namespace Assets.Scripts.Models
 		public float Mantissa { get; set; } = 0;
 		public int Exponent { get; set; } = 0;
 
+		public Number()
+		{
+
+		}
+
 		public Number(int value)
 		{
 			Mantissa = value;

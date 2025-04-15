@@ -19,11 +19,6 @@ public class ItemHandler : MonoBehaviour
 	public Sprite MainHand;
 	public Image Image;
 
-	void Start()
-    {
-        
-    }
-
     void Update()
     {
 		if (Item != null)
