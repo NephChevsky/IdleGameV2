@@ -13,7 +13,7 @@ namespace Assets.Scripts.Models
 
 	public class GameEngine
 	{
-		public int TickRate = 100;
+		public int TickRate = 1000;
 		public float EntityCollisionOffset = 0.035f;
 	}
 }

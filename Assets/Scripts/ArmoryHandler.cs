@@ -1,6 +1,9 @@
+using Assets.Scripts.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
+using UnityEngine.UIElements;
 
 public class ArmoryHandler : MonoBehaviour
 {
@@ -34,6 +37,19 @@ public class ArmoryHandler : MonoBehaviour
 
     void Update()
     {
-        
-    }
+        int count = 0;
+		foreach (GameObject item in Inventory)
+		{
+			if (Game.Inventory.Count > count)
+			{
+				ItemHandler itemScript = item.GetComponent<ItemHandler>();
+				itemScript.Item = Game.Inventory[count];
+			}
+			else
+			{
+				item.GetComponent<ItemHandler>().Item = null;
+			}
+            count++;
+		}
+	}
 }
