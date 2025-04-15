@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GraphicalEngine : MonoBehaviour
 {
     public GameObject EntityPrefab;
 	public TMP_Text MapLevelPlaceHolder;
 	public TMP_Text PlayerLevelPlaceHolder;
+	public GameObject DeathScreen;
 
 	private GameObject Player;
     private List<GameObject> Enemies;
@@ -31,6 +33,25 @@ public class GraphicalEngine : MonoBehaviour
     {
 		MapLevelPlaceHolder.text = Game.Map.Level.ToString();
 		PlayerLevelPlaceHolder.text = Game.Map.Player.Level.ToString();
+
+		float deathScreenAlphaRatio = 0f;
+		if (Game.Map.DeathTimer >= 0f)
+		{
+			DeathScreen.transform.SetAsLastSibling();
+			deathScreenAlphaRatio = 1f;
+			if (Game.Map.DeathTimer <= 0.5f * 100f / Settings.GameEngine.TickRate)
+			{
+				deathScreenAlphaRatio = Game.Map.DeathTimer;
+			}
+		}
+		Image image = DeathScreen.GetComponentInChildren<Image>();
+		Color color = image.color;
+		color.a = Game.Map.DeathTimer;
+		image.color = color;
+		TMP_Text text = DeathScreen.GetComponentInChildren<TMP_Text>();
+		color = text.color;
+		color.a = Game.Map.DeathTimer;
+		text.color = color;
 
 		SetEntityPosition(Player, Game.Map.Player.Position);
 		SetEntityLifeRatio(Player, (float) (Game.Map.Player.CurrentHP / Game.Map.Player.MaxHP));

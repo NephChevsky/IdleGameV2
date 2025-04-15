@@ -8,6 +8,7 @@ namespace Assets.Scripts.Models
 		public Player Player { get; set; }
 		public List<Enemy> EnemiesToSpawn { get; set; } = new();
 		public List<Enemy> SpawnedEnemies { get; set; } = new();
+		public float DeathTimer { get; set; } = -1f;
 		private float EnemySpawnTimer { get; set; }
 
 		public Map(int level)
@@ -19,6 +20,16 @@ namespace Assets.Scripts.Models
 
 		public void Advance()
 		{
+			if (DeathTimer >= 0f)
+			{
+				DeathTimer += 1f / Settings.GameEngine.TickRate;
+				if (DeathTimer > 3f * 100f / Settings.GameEngine.TickRate)
+				{
+					ResetMap();
+				}
+				return;
+			}
+
 			SpawnEnemies();
 			Everyone_Move();
 			Everyone_Attack();
@@ -127,7 +138,7 @@ namespace Assets.Scripts.Models
 				{
 					if (Entity_Attack(SpawnedEnemies[i], Player))
 					{
-						ResetMap();
+						ShowDeathScreen();
 					}
 				}
 			}
@@ -144,8 +155,14 @@ namespace Assets.Scripts.Models
 			return false;
 		}
 
+		private void ShowDeathScreen()
+		{
+			DeathTimer = 0f;
+		}
+
 		private void ResetMap()
 		{
+			DeathTimer = -1f;
 			Player.Reset();
 			EnemiesToSpawn.Clear();
 			SpawnedEnemies.Clear();
