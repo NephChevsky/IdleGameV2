@@ -1,12 +1,14 @@
 using Assets.Scripts.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class Game
 {
 	public static Map Map { get; set; }
-    public static List<Item> Inventory { get; set; }
+	public static List<Item> Equipment { get; set; } = new();
+	public static List<Item> Inventory { get; set; }
 
     private static readonly float TickTime = 1f / Settings.GameEngine.TickRate;
     private static float CurrentTime { get; set; }
@@ -49,7 +51,57 @@ public static class Game
         CurrentTime += elapsedTime;
 	}
 
-    private static void Save()
+	public static void EquipOrUnequipItem(Item item)
+	{
+		if (Equipment.FirstOrDefault(x => x.Id == item.Id) != null)
+		{
+			UnequipItem(item);
+		}
+		else
+		{
+			EquipItem(item);
+		}
+	}
+
+	private static void UnequipItem(Item item)
+	{
+		if (Inventory.Count < 50)
+		{
+			Equipment.Remove(item);
+			Inventory.Add(item);
+		}
+	}
+
+	private static void EquipItem(Item item)
+	{
+		Item equippedItem = null;
+		if (item.Type == ItemType.Ring)
+		{
+			List<Item> rings = Equipment.Where(x => x.Type == item.Type).ToList();
+			if (rings.Count == 2)
+			{
+				equippedItem = rings[0];
+			}
+		}
+		else
+		{
+			equippedItem = Equipment.FirstOrDefault(x => x.Type == item.Type);
+		}
+		if (equippedItem == null)
+		{
+			Inventory.Remove(item);
+			Equipment.Add(item);
+		}
+		else
+		{
+			Inventory.Remove(item);
+			Equipment.Remove(equippedItem);
+			Equipment.Add(item);
+			Inventory.Add(equippedItem);
+		}
+	}
+
+	private static void Save()
     {
         PlayerPrefs.SetInt("Map:Level", Map.Level);
         PlayerPrefs.SetInt("Map:Player:Level", Map.Player.Level);

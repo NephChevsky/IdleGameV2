@@ -2,9 +2,10 @@ using Assets.Scripts.Models;
 using System.Net.NetworkInformation;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemHandler : MonoBehaviour
+public class ItemHandler : MonoBehaviour, IPointerDownHandler
 {
     public Item Item;
 	public Sprite Helm;
@@ -18,6 +19,8 @@ public class ItemHandler : MonoBehaviour
 	public Sprite OffHand;
 	public Sprite MainHand;
 	public Image Image;
+
+	private float DoubleClickTimer = -1f;
 
     void Update()
     {
@@ -88,6 +91,30 @@ public class ItemHandler : MonoBehaviour
 
 			Image.sprite = null;
 			Image.color = new Color(0f, 0f, 0f, 0f);
+		}
+
+		if (DoubleClickTimer > 0.5f)
+		{
+			DoubleClickTimer = -1f;
+		}
+		else if (DoubleClickTimer >= 0f)
+		{
+			DoubleClickTimer += Time.deltaTime;
+		}
+	}
+
+	public void OnPointerDown(PointerEventData eventData)
+	{
+		if (Item != null)
+		{
+			if (DoubleClickTimer >= 0f && DoubleClickTimer <= 0.5f)
+			{
+				Game.EquipOrUnequipItem(Item);
+			}
+			else
+			{
+				DoubleClickTimer = 0f;
+			}
 		}
 	}
 }

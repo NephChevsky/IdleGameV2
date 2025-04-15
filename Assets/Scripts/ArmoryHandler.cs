@@ -1,4 +1,6 @@
+using Assets.Scripts.Models;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
@@ -92,7 +94,7 @@ public class ArmoryHandler : MonoBehaviour
 		OffHand.transform.localScale = Vector3.one;
 
 		xOffset = width * 3f / 8f;
-		yOffset = height / 2f - 50;
+		yOffset = height / 2 - 32;
 		Helm.transform.localPosition = new Vector2(xOffset, yOffset);
 		Amulet.transform.localPosition = new Vector2(xOffset + 104, yOffset);
 		Gloves.transform.localPosition = new Vector2(xOffset - 104, yOffset - 104);
@@ -122,5 +124,17 @@ public class ArmoryHandler : MonoBehaviour
 			}
             count++;
 		}
+
+		Helm.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Helm);
+		Amulet.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Amulet);
+		Gloves.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Gloves);
+		Chest.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Chest);
+		RingL.GetComponent<ItemHandler>().Item = Game.Equipment.Where(x => x.Type == ItemType.Ring).FirstOrDefault();
+		Belt.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Belt);
+		RingL.GetComponent<ItemHandler>().Item = Game.Equipment.Where(x => x.Type == ItemType.Ring).Skip(1).FirstOrDefault();
+		Pants.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Pants);
+		Boots.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Boots);
+		MainHand.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.MainHand);
+		OffHand.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.OffHand);
 	}
 }
