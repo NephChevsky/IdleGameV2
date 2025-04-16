@@ -1,11 +1,11 @@
 using Assets.Scripts.Models;
-using System.Net.NetworkInformation;
-using UnityEditor;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemHandler : MonoBehaviour, IPointerDownHandler
+public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     public Item Item;
 	public Sprite Helm;
@@ -101,6 +101,23 @@ public class ItemHandler : MonoBehaviour, IPointerDownHandler
 		{
 			DoubleClickTimer += Time.deltaTime;
 		}
+	}
+
+	public void OnPointerEnter(PointerEventData eventData)
+	{
+		if (Item != null)
+		{
+			List<string> content = new();
+			foreach (Affix affix in Item.Affixes)
+			{
+				content.Add($"{affix.Type}: +{affix.Value}%");
+			}
+			TooltipHandler._instance.SetAndShowTooltip(content);
+		}
+	}
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		TooltipHandler._instance.HideTooltip();
 	}
 
 	public void OnPointerDown(PointerEventData eventData)
