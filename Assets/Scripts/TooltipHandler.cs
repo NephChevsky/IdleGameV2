@@ -89,8 +89,19 @@ public class TooltipHandler : MonoBehaviour
 		{
 			RectTransform rt = GetComponent<RectTransform>();
 
-			float xPos = Mathf.Min(localPoint.x + rt.rect.width / 2, canvasRT.rect.width / 2 - rt.rect.width / 2) + 5;
-			float yPos = Mathf.Min(localPoint.y + rt.rect.height / 2, canvasRT.rect.height / 2 - rt.rect.height / 2) + 5;
+			float xPos = localPoint.x + rt.rect.width / 2 + 5;
+			float yPos = localPoint.y + rt.rect.height / 2 + 5;
+
+			if (yPos + rt.rect.height / 2 > canvasRT.rect.height / 2 - 5)
+			{
+				xPos += 20;
+				yPos = localPoint.y - rt.rect.height / 2 - 5;
+			}
+
+			if (xPos + rt.rect.width / 2 > canvasRT.rect.width / 2 - 5)
+			{
+				xPos = localPoint.x - rt.rect.width / 2 - 5;
+			}
 
 			transform.localPosition = new Vector2(xPos, yPos);
 		}
