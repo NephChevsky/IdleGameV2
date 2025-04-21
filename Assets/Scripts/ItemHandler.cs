@@ -132,6 +132,7 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 		{
 			if (DoubleClickTimer >= 0f && DoubleClickTimer <= 0.5f)
 			{
+				DoubleClickTimer = -1f;
 				if (Game.SalvageMode)
 				{
 					Game.SalvageItem(Item);
