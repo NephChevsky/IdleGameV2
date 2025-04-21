@@ -9,6 +9,7 @@ public static class Game
 	public static Map Map { get; set; }
 	public static List<Item> Equipment { get; set; } = new();
 	public static List<Item> Inventory { get; set; }
+	public static Dictionary<AffixType, int> AffixShards { get; set; } = new();
 
     private static readonly float TickTime = 1f / Settings.GameEngine.TickRate;
     private static float CurrentTime { get; set; }
@@ -134,6 +135,14 @@ public static class Game
 
 	public static void SalvageItem(Item item)
 	{
+		foreach (Affix affix in item.Affixes)
+		{
+			if (!AffixShards.ContainsKey(affix.Type))
+			{
+				AffixShards.Add(affix.Type, 0);
+			}
+			AffixShards[affix.Type]++;
+		}
 		Inventory.Remove(item);
 	}
 
