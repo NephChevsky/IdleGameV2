@@ -42,7 +42,12 @@ public static class Game
 			Inventory = new();
 		}
 		Map = new(mapLevel, playerLevel);
-    }
+
+		AutoSalvageWhite = PlayerPrefs.GetInt("AutoSalvageWhite", 0) != 0;
+		AutoSalvageGreen = PlayerPrefs.GetInt("AutoSalvageGreen", 0) != 0;
+		AutoSalvageBlue = PlayerPrefs.GetInt("AutoSalvageBlue", 0) != 0;
+		AutoSalvagePurple = PlayerPrefs.GetInt("AutoSalvagePurple", 0) != 0;
+	}
 
     public static void Advance(float elapsedTime)
     {
@@ -120,18 +125,6 @@ public static class Game
 		Inventory.Remove(item);
 	}
 
-	private static void Save()
-    {
-        PlayerPrefs.SetInt("Map:Level", Map.Level);
-        PlayerPrefs.SetInt("Map:Player:Level", Map.Player.Level);
-		string json = JsonConvert.SerializeObject(Inventory);
-		PlayerPrefs.SetString("Inventory", json);
-		json = JsonConvert.SerializeObject(Equipment);
-		PlayerPrefs.SetString("Equipment", json);
-		PlayerPrefs.Save();
-		Debug.Log("Game saved");
-	}
-
 	public static void ToggleSalvageMode()
 	{
 		SalvageMode = !SalvageMode;
@@ -155,5 +148,21 @@ public static class Game
 	public static void ToggleAutoSalvagePurple()
 	{
 		AutoSalvagePurple = !AutoSalvagePurple;
+	}
+
+	private static void Save()
+    {
+        PlayerPrefs.SetInt("Map:Level", Map.Level);
+        PlayerPrefs.SetInt("Map:Player:Level", Map.Player.Level);
+		string json = JsonConvert.SerializeObject(Inventory);
+		PlayerPrefs.SetString("Inventory", json);
+		json = JsonConvert.SerializeObject(Equipment);
+		PlayerPrefs.SetString("Equipment", json);
+		PlayerPrefs.SetInt("AutoSalvageWhite", AutoSalvageWhite ? 1 : 0);
+		PlayerPrefs.SetInt("AutoSalvageGreen", AutoSalvageGreen ? 1 : 0);
+		PlayerPrefs.SetInt("AutoSalvageBlue", AutoSalvageBlue ? 1 : 0);
+		PlayerPrefs.SetInt("AutoSalvagePurple", AutoSalvagePurple ? 1 : 0);
+		PlayerPrefs.Save();
+		Debug.Log("Game saved");
 	}
 }
