@@ -12,6 +12,7 @@ namespace Assets.Scripts.Models
 		public Player(int level) : base(100, 1, 100)
 		{
 			Level = level;
+			MaxXP = 20 * Math.Pow(1.5, Level);
 		}
 
 		public void LevelUp()
