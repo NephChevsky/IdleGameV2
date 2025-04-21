@@ -92,6 +92,12 @@ public static class Game
 
 		Map = new(mapLevel, playerLevel);
 
+		if (PlayerPrefs.HasKey("Map:Player:CurrentXP"))
+		{
+			string json = PlayerPrefs.GetString("Map:Player:CurrentXP");
+			Map.Player.CurrentXP = JsonConvert.DeserializeObject<Number>(json);
+		}
+
 		AutoSalvageWhite = PlayerPrefs.GetInt("AutoSalvageWhite", 0) != 0;
 		AutoSalvageGreen = PlayerPrefs.GetInt("AutoSalvageGreen", 0) != 0;
 		AutoSalvageBlue = PlayerPrefs.GetInt("AutoSalvageBlue", 0) != 0;
@@ -211,6 +217,7 @@ public static class Game
     {
         PlayerPrefs.SetInt("Map:Level", Map.Level);
         PlayerPrefs.SetInt("Map:Player:Level", Map.Player.Level);
+		PlayerPrefs.SetString("Map:Player:CurrentXP", JsonConvert.SerializeObject(Map.Player.CurrentXP));
 		PlayerPrefs.SetString("Inventory", JsonConvert.SerializeObject(Inventory));
 		PlayerPrefs.SetString("Equipment", JsonConvert.SerializeObject(Equipment));
 		PlayerPrefs.SetString("AffixShards", JsonConvert.SerializeObject(AffixShards));
