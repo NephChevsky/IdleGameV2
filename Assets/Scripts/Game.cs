@@ -74,7 +74,7 @@ public static class Game
 
 	private static void UnequipItem(Item item)
 	{
-		if (Inventory.Count < 50)
+		if (Inventory.Count < 90)
 		{
 			Equipment.Remove(item);
 			Inventory.Add(item);

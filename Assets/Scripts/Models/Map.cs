@@ -123,7 +123,7 @@ namespace Assets.Scripts.Models
 					}
 
 					bool drop = Random.Range(0f, 1f) >= 0.95f;
-					if (drop && Game.Inventory.Count < 50)
+					if (drop && Game.Inventory.Count < 90)
 					{
 						Item item = Item.Generate();
 						Game.Inventory.Add(item);

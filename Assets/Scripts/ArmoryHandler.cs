@@ -29,7 +29,7 @@ public class ArmoryHandler : MonoBehaviour
         float height = rect.height * 0.95f;
         float xOffset = 10;
         float yOffset = 32;
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 90; i++)
         {
             GameObject item = Instantiate(ItemPrefab);
             item.transform.SetParent(transform);
