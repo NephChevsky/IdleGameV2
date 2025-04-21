@@ -8,7 +8,7 @@ public class TooltipHandler : MonoBehaviour
 
 	private float VisibilityTimer = 0f;
 
-	private List<GameObject> Lines = new();
+	private readonly List<GameObject> Lines = new();
 
 	private void Awake()
 	{

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Models
 {
@@ -16,8 +17,8 @@ namespace Assets.Scripts.Models
 		public void LevelUp()
 		{
 			Level++;
-			CurrentXP = CurrentXP - MaxXP;
-			MaxXP = MaxXP * 1.5;
+			CurrentXP -= MaxXP;
+			MaxXP = 20 * Math.Pow(1.5, Level);
 		}
 
 		public void Reset()

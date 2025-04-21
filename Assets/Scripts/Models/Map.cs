@@ -71,7 +71,7 @@ namespace Assets.Scripts.Models
 		{
 			int direction = entity is Player ? 1 : -1;
 			Number mouvementSpeed = entity.MovementSpeed;
-			if (entity is Player player)
+			if (entity is Player)
 			{
 				mouvementSpeed *= GetAffixTypeBonusFromEquipment(AffixType.MovementSpeed);
 			}
