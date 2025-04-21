@@ -122,7 +122,7 @@ namespace Assets.Scripts.Models
 						Player.LevelUp();
 					}
 
-					bool drop = Random.Range(0f, 1f) >= 0f;
+					bool drop = Random.Range(0f, 1f) >= 0.95f;
 					if (drop)
 					{
 						Item item = Item.Generate();
