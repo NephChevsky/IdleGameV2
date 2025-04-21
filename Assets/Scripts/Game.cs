@@ -19,6 +19,18 @@ public static class Game
 	public static bool AutoSalvageBlue { get; private set; }
 	public static bool AutoSalvagePurple { get; private set; }
 
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+	static void ResetStatics()
+	{
+		CurrentTime = 0f;
+		SaveTimer = 0f;
+		SalvageMode = false;
+		AutoSalvageWhite = false;
+		AutoSalvageGreen = false;
+		AutoSalvageBlue = false;
+		AutoSalvagePurple = false;
+	}
+
 	public static void Init()
     {
         int mapLevel = PlayerPrefs.GetInt("Map:Level", 1);
