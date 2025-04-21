@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Models
@@ -163,12 +164,33 @@ namespace Assets.Scripts.Models
 		private bool Entity_Attack(Entity attacker, Entity defender)
 		{
 			attacker.AttackTimer = 0f;
-			defender.CurrentHP -= attacker.AttackDamage;
+			Number dmg = attacker.AttackDamage;
+			if (attacker is Player player)
+			{
+				dmg *= GetAffixTypeBonusFromEquipment(AffixType.Attack);
+			}
+			defender.CurrentHP -= dmg;
 			if (defender.CurrentHP <= 0)
 			{
 				return true;
 			}
 			return false;
+		}
+
+		private Number GetAffixTypeBonusFromEquipment(AffixType affixType)
+		{
+			Number value = 1f;
+			foreach (Item item in Game.Equipment)
+			{
+				foreach (Affix affix in item.Affixes)
+				{
+					if (affix.Type == affixType)
+					{
+						value *= 1 + affix.Value;
+					}
+				}
+			}
+			return value;
 		}
 
 		private void ShowDeathScreen()
