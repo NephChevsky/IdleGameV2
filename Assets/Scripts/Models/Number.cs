@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
@@ -11,7 +12,6 @@ namespace Assets.Scripts.Models
 
 		public Number()
 		{
-
 		}
 
 		public Number(int value)
@@ -168,6 +168,10 @@ namespace Assets.Scripts.Models
 
 		public override string ToString()
 		{
+			if (Exponent <= 3)
+			{
+				return Math.Round(Mantissa * Math.Pow(10, Exponent), 2).ToString();
+			}
 			return $"{Mantissa}e{Exponent}";
 		}
 

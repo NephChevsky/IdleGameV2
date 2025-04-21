@@ -17,7 +17,7 @@ namespace Assets.Scripts.Models
 			Affix affix = new()
 			{
 				Type = ((AffixType[])Enum.GetValues(typeof(AffixType)))[UnityEngine.Random.Range(0, Enum.GetNames(typeof(AffixType)).Length)],
-				Value = Mathf.Round(UnityEngine.Random.Range(1, 5))
+				Value = UnityEngine.Random.Range(1, 5) / 100f 
 			};
 			return affix;
 		}

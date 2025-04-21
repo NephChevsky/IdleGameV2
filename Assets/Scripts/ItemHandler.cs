@@ -116,7 +116,7 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 			List<string> content = new();
 			foreach (Affix affix in Item.Affixes)
 			{
-				content.Add($"{affix.Type}: +{affix.Value}%");
+				content.Add($"{affix.Type}: +{affix.Value * 100}%");
 			}
 			TooltipHandler._instance.SetAndShowTooltip(content);
 		}
