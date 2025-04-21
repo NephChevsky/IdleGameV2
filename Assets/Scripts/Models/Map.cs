@@ -71,11 +71,13 @@ namespace Assets.Scripts.Models
 		{
 			int direction = entity is Player ? 1 : -1;
 			Number mouvementSpeed = entity.MovementSpeed;
+			Number mouvementSpeedBonus = 0;
 			if (entity is Player)
 			{
-				mouvementSpeed *= GetAffixTypeBonusFromEquipment(AffixType.MovementSpeed);
+				mouvementSpeedBonus = GetAffixTypeBonusFromEquipment(AffixType.MovementSpeed);
+				mouvementSpeedBonus += GetAffixTypeBonusFromAttributes(AffixType.MovementSpeed);
 			}
-			float newPosition = entity.Position + direction * mouvementSpeed / 100000f;
+			float newPosition = entity.Position + direction * mouvementSpeed * (1 + mouvementSpeedBonus) / 100000f;
 
 			if (newPosition > 1f)
 			{
@@ -170,18 +172,22 @@ namespace Assets.Scripts.Models
 		{
 			attacker.AttackTimer = 0f;
 			Number dmg = attacker.AttackDamage;
+			Number dmgBonus = 0;
 			if (attacker is Player)
 			{
-				dmg *= GetAffixTypeBonusFromEquipment(AffixType.Attack);
+				dmgBonus += GetAffixTypeBonusFromEquipment(AffixType.Attack);
+				dmgBonus += GetAffixTypeBonusFromAttributes(AffixType.Attack);
 			}
-			Number hpBonus = 1;
-			Number defenseBonus = 1;
+			Number hpBonus = 0;
+			Number defenseBonus = 0;
 			if (defender is Player)
 			{
-				hpBonus *= GetAffixTypeBonusFromEquipment(AffixType.HP);
-				defenseBonus *= GetAffixTypeBonusFromEquipment(AffixType.Defense);
+				hpBonus = GetAffixTypeBonusFromEquipment(AffixType.HP);
+				hpBonus += GetAffixTypeBonusFromAttributes(AffixType.HP);
+				defenseBonus = GetAffixTypeBonusFromEquipment(AffixType.Defense);
+				defenseBonus += GetAffixTypeBonusFromAttributes(AffixType.Defense);
 			}
-			defender.CurrentHP -= dmg / (hpBonus * defenseBonus);
+			defender.CurrentHP -= dmg * (1 + dmgBonus) / (1 + hpBonus + defenseBonus);
 			if (defender.CurrentHP <= 0)
 			{
 				defender.CurrentHP = 0;
@@ -203,7 +209,12 @@ namespace Assets.Scripts.Models
 					}
 				}
 			}
-			return 1 + value;
+			return value;
+		}
+
+		private Number GetAffixTypeBonusFromAttributes(AffixType affixType)
+		{
+			return Game.AffectedAttributePoints[affixType] / 100f;
 		}
 
 		private void ShowDeathScreen()
