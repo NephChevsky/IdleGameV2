@@ -1,5 +1,6 @@
 using Assets.Scripts.Models;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,6 +11,7 @@ public static class Game
 	public static List<Item> Equipment { get; set; } = new();
 	public static List<Item> Inventory { get; set; }
 	public static Dictionary<AffixType, int> AffixShards { get; set; } = new();
+	public static Dictionary<AffixType, int> AffectedAttributePoints { get; set; } = new();
 
     private static float TickTime = 1f / Settings.GameEngine.TickRate;
     private static float CurrentTime { get; set; }
@@ -36,6 +38,7 @@ public static class Game
 		Equipment = new();
 		Inventory = new();
 		AffixShards = new();
+		AffectedAttributePoints = new();
 	}
 
 	public static void Init()
@@ -71,6 +74,20 @@ public static class Game
 		else
 		{
 			AffixShards = new();
+		}
+
+		if (PlayerPrefs.HasKey("AffectedAttributePoints"))
+		{
+			string json = PlayerPrefs.GetString("AffectedAttributePoints");
+			AffectedAttributePoints = JsonConvert.DeserializeObject<Dictionary<AffixType, int>>(json);
+		}
+		else
+		{
+			AffectedAttributePoints = new();
+			foreach (AffixType affix in Enum.GetValues(typeof(AffixType)))
+			{
+				AffectedAttributePoints.Add(affix, 0);
+			}
 		}
 
 		Map = new(mapLevel, playerLevel);
@@ -194,16 +211,14 @@ public static class Game
     {
         PlayerPrefs.SetInt("Map:Level", Map.Level);
         PlayerPrefs.SetInt("Map:Player:Level", Map.Player.Level);
-		string json = JsonConvert.SerializeObject(Inventory);
-		PlayerPrefs.SetString("Inventory", json);
-		json = JsonConvert.SerializeObject(Equipment);
-		PlayerPrefs.SetString("Equipment", json);
+		PlayerPrefs.SetString("Inventory", JsonConvert.SerializeObject(Inventory));
+		PlayerPrefs.SetString("Equipment", JsonConvert.SerializeObject(Equipment));
+		PlayerPrefs.SetString("AffixShards", JsonConvert.SerializeObject(AffixShards));
+		PlayerPrefs.SetString("AffectedAttributePoints", JsonConvert.SerializeObject(AffectedAttributePoints));
 		PlayerPrefs.SetInt("AutoSalvageWhite", AutoSalvageWhite ? 1 : 0);
 		PlayerPrefs.SetInt("AutoSalvageGreen", AutoSalvageGreen ? 1 : 0);
 		PlayerPrefs.SetInt("AutoSalvageBlue", AutoSalvageBlue ? 1 : 0);
 		PlayerPrefs.SetInt("AutoSalvagePurple", AutoSalvagePurple ? 1 : 0);
-		json = JsonConvert.SerializeObject(AffixShards);
-		PlayerPrefs.SetString("AffixShards", json);
 		PlayerPrefs.Save();
 		Debug.Log("Game saved");
 	}

@@ -1,17 +1,23 @@
 using Assets.Scripts.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ArmoryHandler : MonoBehaviour
 {
     public GameObject ItemPrefab;
+	public GameObject AttributeSetterPrefab;
+
 	public GameObject SalvageButton;
 	public GameObject AutoSalvageWhiteToggle;
 	public GameObject AutoSalvageGreenToggle;
 	public GameObject AutoSalvageBlueToggle;
 	public GameObject AutoSalvagePurpleToggle;
+
+	public GameObject AttributePointsValue;
 
 	private readonly List<GameObject> Inventory = new();
 
@@ -26,6 +32,8 @@ public class ArmoryHandler : MonoBehaviour
 	private GameObject Boots;
 	private GameObject MainHand;
 	private GameObject OffHand;
+
+	private readonly List<GameObject> AttributeSetters = new();
 
 	void Start()
     {
@@ -121,6 +129,21 @@ public class ArmoryHandler : MonoBehaviour
 		AutoSalvageGreenToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => Game.ToggleAutoSalvageGreen());
 		AutoSalvageBlueToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => Game.ToggleAutoSalvageBlue());
 		AutoSalvagePurpleToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => Game.ToggleAutoSalvagePurple());
+
+		xOffset = width * 3f / 8f;
+		yOffset = -height / 2 + 200;
+		foreach (AffixType affix in Enum.GetValues(typeof(AffixType)))
+		{
+			GameObject go = Instantiate(AttributeSetterPrefab);
+			go.transform.SetParent(transform);
+			go.transform.localScale = Vector3.one;
+			go.transform.localPosition = new Vector2(xOffset, yOffset);
+			AttributeSetterHandler handler = go.GetComponent<AttributeSetterHandler>();
+			handler.SetName(affix);
+			handler.SetValue(Game.AffectedAttributePoints[affix]);
+			AttributeSetters.Add(go);
+			yOffset -= 35;
+		}
 	}
 
     void Update()
@@ -152,5 +175,7 @@ public class ArmoryHandler : MonoBehaviour
 		Boots.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Boots);
 		MainHand.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.MainHand);
 		OffHand.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.OffHand);
+
+		AttributePointsValue.GetComponent<TMP_Text>().text = (Game.Map.Player.Level - Game.AffectedAttributePoints.Sum(x => x.Value) - 1).ToString();
 	}
 }
