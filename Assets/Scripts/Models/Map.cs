@@ -70,7 +70,12 @@ namespace Assets.Scripts.Models
 		private void Entity_Move(Entity entity)
 		{
 			int direction = entity is Player ? 1 : -1;
-			float newPosition = entity.Position + direction * entity.MovementSpeed / 100000f;
+			Number mouvementSpeed = entity.MovementSpeed;
+			if (entity is Player player)
+			{
+				mouvementSpeed *= GetAffixTypeBonusFromEquipment(AffixType.MovementSpeed);
+			}
+			float newPosition = entity.Position + direction * mouvementSpeed / 100000f;
 
 			if (newPosition > 1f)
 			{
