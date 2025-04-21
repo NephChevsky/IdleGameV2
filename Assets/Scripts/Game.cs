@@ -13,6 +13,7 @@ public static class Game
     private static readonly float TickTime = 1f / Settings.GameEngine.TickRate;
     private static float CurrentTime { get; set; }
     private static float SaveTimer { get; set; }
+	public static bool SalvageMode { get; private set; }
 
     public static void Init()
     {
@@ -110,6 +111,11 @@ public static class Game
 		}
 	}
 
+	public static void SalvageItem(Item item)
+	{
+		Inventory.Remove(item);
+	}
+
 	private static void Save()
     {
         PlayerPrefs.SetInt("Map:Level", Map.Level);
@@ -120,5 +126,10 @@ public static class Game
 		PlayerPrefs.SetString("Equipment", json);
 		PlayerPrefs.Save();
 		Debug.Log("Game saved");
+	}
+
+	public static void ToggleSalvageMode()
+	{
+		SalvageMode = !SalvageMode;
 	}
 }

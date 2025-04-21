@@ -2,11 +2,12 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.UI;
 
 public class ArmoryHandler : MonoBehaviour
 {
     public GameObject ItemPrefab;
+	public GameObject SalvageButton;
     
     private readonly List<GameObject> Inventory = new();
 
@@ -106,6 +107,8 @@ public class ArmoryHandler : MonoBehaviour
 		Boots.transform.localPosition = new Vector2(xOffset, yOffset - 104 * 4);
 		MainHand.transform.localPosition = new Vector2(xOffset - 104, yOffset - 104 * 3);
 		OffHand.transform.localPosition = new Vector2(xOffset + 104, yOffset - 104 * 3);
+
+		SalvageButton.GetComponent<Button>().onClick.AddListener(Game.ToggleSalvageMode);
 	}
 
     void Update()
@@ -117,6 +120,7 @@ public class ArmoryHandler : MonoBehaviour
 			{
 				ItemHandler itemScript = item.GetComponent<ItemHandler>();
 				itemScript.Item = Game.Inventory[count];
+				itemScript.AllowSalvageMode = true;
 			}
 			else
 			{

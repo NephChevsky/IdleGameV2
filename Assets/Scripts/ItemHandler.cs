@@ -20,6 +20,8 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	public Sprite MainHand;
 	public Image Image;
 
+	public bool AllowSalvageMode { get; set; }
+
 	private float DoubleClickTimer = -1f;
 
     void Update()
@@ -28,7 +30,11 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 		{
 			Image panel = GetComponentInChildren<Image>();
 
-			if (Item.Affixes.Count == 1)
+			if (Game.SalvageMode && AllowSalvageMode)
+			{
+				panel.color = new Color(1f, 0f, 0f);
+			}
+			else if (Item.Affixes.Count == 1)
 			{
 				panel.color = new Color(1f, 1f, 1f);
 			}
@@ -126,7 +132,14 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 		{
 			if (DoubleClickTimer >= 0f && DoubleClickTimer <= 0.5f)
 			{
-				Game.EquipOrUnequipItem(Item);
+				if (Game.SalvageMode)
+				{
+					Game.SalvageItem(Item);
+				}
+				else
+				{
+					Game.EquipOrUnequipItem(Item);
+				}
 			}
 			else
 			{
