@@ -175,7 +175,7 @@ namespace Assets.Scripts.Models
 			return $"{Mantissa}e{Exponent}";
 		}
 
-		public static explicit operator float(Number number)
+		public static implicit operator float(Number number)
 		{
 			return number.Mantissa * (float)Math.Pow(10, number.Exponent);
 		}
