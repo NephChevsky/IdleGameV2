@@ -8,8 +8,12 @@ public class ArmoryHandler : MonoBehaviour
 {
     public GameObject ItemPrefab;
 	public GameObject SalvageButton;
-    
-    private readonly List<GameObject> Inventory = new();
+	public GameObject AutoSalvageWhiteToggle;
+	public GameObject AutoSalvageGreenToggle;
+	public GameObject AutoSalvageBlueToggle;
+	public GameObject AutoSalvagePurpleToggle;
+
+	private readonly List<GameObject> Inventory = new();
 
 	private GameObject Helm;
 	private GameObject Amulet;
@@ -109,6 +113,10 @@ public class ArmoryHandler : MonoBehaviour
 		OffHand.transform.localPosition = new Vector2(xOffset + 104, yOffset - 104 * 3);
 
 		SalvageButton.GetComponent<Button>().onClick.AddListener(Game.ToggleSalvageMode);
+		AutoSalvageWhiteToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => Game.ToggleAutoSalvageWhite());
+		AutoSalvageGreenToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => Game.ToggleAutoSalvageGreen());
+		AutoSalvageBlueToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => Game.ToggleAutoSalvageBlue());
+		AutoSalvagePurpleToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => Game.ToggleAutoSalvagePurple());
 	}
 
     void Update()

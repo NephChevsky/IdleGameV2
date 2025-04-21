@@ -122,11 +122,18 @@ namespace Assets.Scripts.Models
 						Player.LevelUp();
 					}
 
-					bool drop = Random.Range(0f, 1f) >= 0.95f;
-					if (drop && Game.Inventory.Count < 90)
+					bool drop = Random.Range(0f, 1f) >= 0f;
+					if (drop)
 					{
 						Item item = Item.Generate();
-						Game.Inventory.Add(item);
+						if (Game.AutoSalvageWhite && item.Affixes.Count == 1 || Game.AutoSalvageGreen && item.Affixes.Count == 2 || Game.AutoSalvageBlue && item.Affixes.Count == 3 || Game.AutoSalvagePurple && item.Affixes.Count == 4)
+						{
+							Game.SalvageItem(item);
+						}
+						else if (Game.Inventory.Count < 90)
+						{
+							Game.Inventory.Add(item);
+						}
 					}
 
 					SpawnedEnemies.Remove(SpawnedEnemies[0]);

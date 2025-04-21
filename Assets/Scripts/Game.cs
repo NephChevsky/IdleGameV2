@@ -14,8 +14,12 @@ public static class Game
     private static float CurrentTime { get; set; }
     private static float SaveTimer { get; set; }
 	public static bool SalvageMode { get; private set; }
+	public static bool AutoSalvageWhite { get; private set; }
+	public static bool AutoSalvageGreen { get; private set; }
+	public static bool AutoSalvageBlue { get; private set; }
+	public static bool AutoSalvagePurple { get; private set; }
 
-    public static void Init()
+	public static void Init()
     {
         int mapLevel = PlayerPrefs.GetInt("Map:Level", 1);
         int playerLevel = PlayerPrefs.GetInt("Map:Player:Level", 1);
@@ -131,5 +135,25 @@ public static class Game
 	public static void ToggleSalvageMode()
 	{
 		SalvageMode = !SalvageMode;
+	}
+
+	public static void ToggleAutoSalvageWhite()
+	{
+		AutoSalvageWhite = !AutoSalvageWhite;
+	}
+
+	public static void ToggleAutoSalvageGreen()
+	{
+		AutoSalvageGreen = !AutoSalvageGreen;
+	}
+
+	public static void ToggleAutoSalvageBlue()
+	{
+		AutoSalvageBlue = !AutoSalvageBlue;
+	}
+
+	public static void ToggleAutoSalvagePurple()
+	{
+		AutoSalvagePurple = !AutoSalvagePurple;
 	}
 }
