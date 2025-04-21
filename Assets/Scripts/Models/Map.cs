@@ -179,18 +179,18 @@ namespace Assets.Scripts.Models
 
 		private Number GetAffixTypeBonusFromEquipment(AffixType affixType)
 		{
-			Number value = 1f;
+			Number value = 0f;
 			foreach (Item item in Game.Equipment)
 			{
 				foreach (Affix affix in item.Affixes)
 				{
 					if (affix.Type == affixType)
 					{
-						value *= 1 + affix.Value;
+						value += affix.Value;
 					}
 				}
 			}
-			return value;
+			return 1 + value;
 		}
 
 		private void ShowDeathScreen()
