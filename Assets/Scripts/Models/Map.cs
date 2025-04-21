@@ -170,13 +170,19 @@ namespace Assets.Scripts.Models
 		{
 			attacker.AttackTimer = 0f;
 			Number dmg = attacker.AttackDamage;
-			if (attacker is Player player)
+			if (attacker is Player)
 			{
 				dmg *= GetAffixTypeBonusFromEquipment(AffixType.Attack);
 			}
-			defender.CurrentHP -= dmg;
+			Number hpBonus = 1;
+			if (defender is Player)
+			{
+				hpBonus *= GetAffixTypeBonusFromEquipment(AffixType.HP);
+			}
+			defender.CurrentHP -= dmg / hpBonus;
 			if (defender.CurrentHP <= 0)
 			{
+				defender.CurrentHP = 0;
 				return true;
 			}
 			return false;
