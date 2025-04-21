@@ -175,11 +175,13 @@ namespace Assets.Scripts.Models
 				dmg *= GetAffixTypeBonusFromEquipment(AffixType.Attack);
 			}
 			Number hpBonus = 1;
+			Number defenseBonus = 1;
 			if (defender is Player)
 			{
 				hpBonus *= GetAffixTypeBonusFromEquipment(AffixType.HP);
+				defenseBonus *= GetAffixTypeBonusFromEquipment(AffixType.Defense);
 			}
-			defender.CurrentHP -= dmg / hpBonus;
+			defender.CurrentHP -= dmg / (hpBonus * defenseBonus);
 			if (defender.CurrentHP <= 0)
 			{
 				defender.CurrentHP = 0;
