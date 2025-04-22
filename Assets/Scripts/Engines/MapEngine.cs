@@ -15,10 +15,10 @@ namespace Assets.Scripts.Engines
 		public static float DeathTimer { get; set; } = -1f;
 		private static float EnemySpawnTimer { get; set; }
 
-		public static void Init(int mapLevel, int playerLevel)
+		public static void Init()
 		{
-			Player = new(playerLevel);
-			Level = mapLevel;
+			Player = new(PlayerEngine.Level);
+			Level = PlayerPrefs.GetInt("Map:Level", 1);
 			ResetMap();
 		}
 
@@ -76,8 +76,8 @@ namespace Assets.Scripts.Engines
 			Number mouvementSpeedBonus = 0;
 			if (entity is Player)
 			{
-				mouvementSpeedBonus = GetAffixTypeBonusFromEquipment(AffixType.MovementSpeed);
-				mouvementSpeedBonus += GetAffixTypeBonusFromAttributes(AffixType.MovementSpeed);
+				mouvementSpeedBonus = PlayerEngine.GetAffixTypeBonusFromEquipment(AffixType.MovementSpeed);
+				mouvementSpeedBonus += PlayerEngine.GetAffixTypeBonusFromAttributes(AffixType.MovementSpeed);
 			}
 			float newPosition = entity.Position + direction * mouvementSpeed * (1 + mouvementSpeedBonus) / 100000f;
 
@@ -126,11 +126,7 @@ namespace Assets.Scripts.Engines
 			{
 				if (Entity_Attack(Player, SpawnedEnemies[0]))
 				{
-					Player.CurrentXP += SpawnedEnemies[0].XPOnKill;
-					if (Player.CurrentXP >= Player.MaxXP)
-					{
-						Player.LevelUp();
-					}
+					PlayerEngine.GainXP(SpawnedEnemies[0].XPOnKill);
 
 					bool drop = Random.Range(0f, 1f) >= 0.95f;
 					if (drop)
@@ -177,17 +173,17 @@ namespace Assets.Scripts.Engines
 			Number dmgBonus = 0;
 			if (attacker is Player)
 			{
-				dmgBonus += GetAffixTypeBonusFromEquipment(AffixType.Attack);
-				dmgBonus += GetAffixTypeBonusFromAttributes(AffixType.Attack);
+				dmgBonus += PlayerEngine.GetAffixTypeBonusFromEquipment(AffixType.Attack);
+				dmgBonus += PlayerEngine.GetAffixTypeBonusFromAttributes(AffixType.Attack);
 			}
 			Number hpBonus = 0;
 			Number defenseBonus = 0;
 			if (defender is Player)
 			{
-				hpBonus = GetAffixTypeBonusFromEquipment(AffixType.HP);
-				hpBonus += GetAffixTypeBonusFromAttributes(AffixType.HP);
-				defenseBonus = GetAffixTypeBonusFromEquipment(AffixType.Defense);
-				defenseBonus += GetAffixTypeBonusFromAttributes(AffixType.Defense);
+				hpBonus = PlayerEngine.GetAffixTypeBonusFromEquipment(AffixType.HP);
+				hpBonus += PlayerEngine.GetAffixTypeBonusFromAttributes(AffixType.HP);
+				defenseBonus = PlayerEngine.GetAffixTypeBonusFromEquipment(AffixType.Defense);
+				defenseBonus += PlayerEngine.GetAffixTypeBonusFromAttributes(AffixType.Defense);
 			}
 			defender.CurrentHP -= dmg * (1 + dmgBonus) / (1 + hpBonus + defenseBonus);
 			if (defender.CurrentHP <= 0)
@@ -196,27 +192,6 @@ namespace Assets.Scripts.Engines
 				return true;
 			}
 			return false;
-		}
-
-		private static Number GetAffixTypeBonusFromEquipment(AffixType affixType)
-		{
-			Number value = 0f;
-			foreach (Item item in GameEngine.Equipment)
-			{
-				foreach (Affix affix in item.Affixes)
-				{
-					if (affix.Type == affixType)
-					{
-						value += affix.Value;
-					}
-				}
-			}
-			return value;
-		}
-
-		private static Number GetAffixTypeBonusFromAttributes(AffixType affixType)
-		{
-			return GameEngine.AffectedAttributePoints[affixType] / 100f;
 		}
 
 		private static void ShowDeathScreen()
@@ -249,6 +224,11 @@ namespace Assets.Scripts.Engines
 			Enemy boss = Enemy.GenerateBoss(Level);
 			boss.Id = EnemiesToSpawn.Count;
 			EnemiesToSpawn.Add(boss);
+		}
+
+		public static void Save()
+		{
+			PlayerPrefs.SetInt("Map:Level", Level);
 		}
 	}
 }

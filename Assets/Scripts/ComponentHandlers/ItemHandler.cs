@@ -1,3 +1,4 @@
+using Assets.Scripts.Engines;
 using Assets.Scripts.Models;
 using System;
 using System.Collections.Generic;
@@ -120,7 +121,7 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 				mainContent.Add($"{affix.Type}: +{affix.Value * 100}%");
 			}
 			List<string> secondContent = new();
-			Item equippedItem = GameEngine.Equipment.Where(x => x.Type == Item.Type).FirstOrDefault();
+			Item equippedItem = PlayerEngine.Equipment.Where(x => x.Type == Item.Type).FirstOrDefault();
 			if (equippedItem != null && Item.Id != equippedItem.Id)
 			{
 				foreach (Affix affix in equippedItem.Affixes)

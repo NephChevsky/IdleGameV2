@@ -8,10 +8,8 @@ using UnityEngine;
 
 public static class GameEngine
 {
-	public static List<Item> Equipment { get; set; } = new();
 	public static List<Item> Inventory { get; set; }
 	public static Dictionary<AffixType, int> AffixShards { get; set; } = new();
-	public static Dictionary<AffixType, int> AffectedAttributePoints { get; set; } = new();
 
     private static float TickTime = 1f / Settings.Game.TickRate;
     private static float CurrentTime { get; set; }
@@ -35,31 +33,16 @@ public static class GameEngine
 		AutoSalvageBlue = false;
 		AutoSalvagePurple = false;
 
-		Equipment = new();
 		Inventory = new();
 		AffixShards = new();
-		AffectedAttributePoints = new();
 	}
 
 	public static void Init()
     {
-        int mapLevel = PlayerPrefs.GetInt("Map:Level", 1);
-        int playerLevel = PlayerPrefs.GetInt("Map:Player:Level", 1);
-
 		if (PlayerPrefs.HasKey("Inventory"))
 		{
 			string json = PlayerPrefs.GetString("Inventory");
 			Inventory = JsonConvert.DeserializeObject<List<Item>>(json);
-		}
-		else
-		{
-			Inventory = new();
-		}
-
-		if (PlayerPrefs.HasKey("Equipment"))
-		{
-			string json = PlayerPrefs.GetString("Equipment");
-			Equipment = JsonConvert.DeserializeObject<List<Item>>(json);
 		}
 		else
 		{
@@ -76,27 +59,8 @@ public static class GameEngine
 			AffixShards = new();
 		}
 
-		if (PlayerPrefs.HasKey("AffectedAttributePoints"))
-		{
-			string json = PlayerPrefs.GetString("AffectedAttributePoints");
-			AffectedAttributePoints = JsonConvert.DeserializeObject<Dictionary<AffixType, int>>(json);
-		}
-		else
-		{
-			AffectedAttributePoints = new();
-			foreach (AffixType affix in Enum.GetValues(typeof(AffixType)))
-			{
-				AffectedAttributePoints.Add(affix, 0);
-			}
-		}
-
-		MapEngine.Init(mapLevel, playerLevel);
-
-		if (PlayerPrefs.HasKey("Map:Player:CurrentXP"))
-		{
-			string json = PlayerPrefs.GetString("Map:Player:CurrentXP");
-			MapEngine.Player.CurrentXP = JsonConvert.DeserializeObject<Number>(json);
-		}
+		PlayerEngine.Init();
+		MapEngine.Init();
 
 		AutoSalvageWhite = PlayerPrefs.GetInt("AutoSalvageWhite", 0) != 0;
 		AutoSalvageGreen = PlayerPrefs.GetInt("AutoSalvageGreen", 0) != 0;
@@ -127,7 +91,7 @@ public static class GameEngine
 
 	public static void EquipOrUnequipItem(Item item)
 	{
-		if (Equipment.FirstOrDefault(x => x.Id == item.Id) != null)
+		if (PlayerEngine.Equipment.FirstOrDefault(x => x.Id == item.Id) != null)
 		{
 			UnequipItem(item);
 		}
@@ -141,7 +105,7 @@ public static class GameEngine
 	{
 		if (Inventory.Count < 90)
 		{
-			Equipment.Remove(item);
+			PlayerEngine.Equipment.Remove(item);
 			Inventory.Add(item);
 		}
 	}
@@ -151,7 +115,7 @@ public static class GameEngine
 		Item equippedItem = null;
 		if (item.Type == ItemType.Ring)
 		{
-			List<Item> rings = Equipment.Where(x => x.Type == item.Type).ToList();
+			List<Item> rings = PlayerEngine.Equipment.Where(x => x.Type == item.Type).ToList();
 			if (rings.Count == 2)
 			{
 				equippedItem = rings[0];
@@ -159,18 +123,18 @@ public static class GameEngine
 		}
 		else
 		{
-			equippedItem = Equipment.FirstOrDefault(x => x.Type == item.Type);
+			equippedItem = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == item.Type);
 		}
 		if (equippedItem == null)
 		{
 			Inventory.Remove(item);
-			Equipment.Add(item);
+			PlayerEngine.Equipment.Add(item);
 		}
 		else
 		{
 			Inventory.Remove(item);
-			Equipment.Remove(equippedItem);
-			Equipment.Add(item);
+			PlayerEngine.Equipment.Remove(equippedItem);
+			PlayerEngine.Equipment.Add(item);
 			Inventory.Add(equippedItem);
 		}
 	}
@@ -215,13 +179,11 @@ public static class GameEngine
 
 	private static void Save()
     {
-        PlayerPrefs.SetInt("Map:Level", MapEngine.Level);
-        PlayerPrefs.SetInt("Map:Player:Level", MapEngine.Player.Level);
-		PlayerPrefs.SetString("Map:Player:CurrentXP", JsonConvert.SerializeObject(MapEngine.Player.CurrentXP));
+		PlayerEngine.Save();
+		MapEngine.Save();
+
 		PlayerPrefs.SetString("Inventory", JsonConvert.SerializeObject(Inventory));
-		PlayerPrefs.SetString("Equipment", JsonConvert.SerializeObject(Equipment));
 		PlayerPrefs.SetString("AffixShards", JsonConvert.SerializeObject(AffixShards));
-		PlayerPrefs.SetString("AffectedAttributePoints", JsonConvert.SerializeObject(AffectedAttributePoints));
 		PlayerPrefs.SetInt("AutoSalvageWhite", AutoSalvageWhite ? 1 : 0);
 		PlayerPrefs.SetInt("AutoSalvageGreen", AutoSalvageGreen ? 1 : 0);
 		PlayerPrefs.SetInt("AutoSalvageBlue", AutoSalvageBlue ? 1 : 0);

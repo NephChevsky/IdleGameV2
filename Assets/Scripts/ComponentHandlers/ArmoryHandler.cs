@@ -141,7 +141,7 @@ public class ArmoryHandler : MonoBehaviour
 			go.transform.localPosition = new Vector2(xOffset, yOffset);
 			AttributeSetterHandler handler = go.GetComponent<AttributeSetterHandler>();
 			handler.SetName(affix);
-			handler.SetValue(GameEngine.AffectedAttributePoints[affix]);
+			handler.SetValue(PlayerEngine.AffectedAttributePoints[affix]);
 			AttributeSetters.Add(go);
 			yOffset -= 35;
 		}
@@ -165,18 +165,18 @@ public class ArmoryHandler : MonoBehaviour
             count++;
 		}
 
-		Helm.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Helm);
-		Amulet.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Amulet);
-		Gloves.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Gloves);
-		Chest.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Chest);
-		RingL.GetComponent<ItemHandler>().Item = GameEngine.Equipment.Where(x => x.Type == ItemType.Ring).FirstOrDefault();
-		Belt.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Belt);
-		RingR.GetComponent<ItemHandler>().Item = GameEngine.Equipment.Where(x => x.Type == ItemType.Ring).Skip(1).FirstOrDefault();
-		Pants.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Pants);
-		Boots.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Boots);
-		MainHand.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.MainHand);
-		OffHand.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.OffHand);
+		Helm.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Helm);
+		Amulet.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Amulet);
+		Gloves.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Gloves);
+		Chest.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Chest);
+		RingL.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.Where(x => x.Type == ItemType.Ring).FirstOrDefault();
+		Belt.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Belt);
+		RingR.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.Where(x => x.Type == ItemType.Ring).Skip(1).FirstOrDefault();
+		Pants.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Pants);
+		Boots.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Boots);
+		MainHand.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.MainHand);
+		OffHand.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.OffHand);
 
-		AttributePointsValue.GetComponent<TMP_Text>().text = (MapEngine.Player.Level - GameEngine.AffectedAttributePoints.Sum(x => x.Value) - 1).ToString();
+		AttributePointsValue.GetComponent<TMP_Text>().text = (PlayerEngine.Level - PlayerEngine.AffectedAttributePoints.Sum(x => x.Value) - 1).ToString();
 	}
 }

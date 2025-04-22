@@ -1,6 +1,5 @@
 using Assets.Scripts.Engines;
 using Assets.Scripts.Models;
-using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -33,7 +32,7 @@ public class GraphicalEngine : MonoBehaviour
     void Update()
     {
 		MapLevelPlaceHolder.text = MapEngine.Level.ToString();
-		PlayerLevelPlaceHolder.text = MapEngine.Player.Level.ToString();
+		PlayerLevelPlaceHolder.text = PlayerEngine.Level.ToString();
 
 		float deathScreenAlphaRatio = 0f;
 		if (MapEngine.DeathTimer >= 0f)
