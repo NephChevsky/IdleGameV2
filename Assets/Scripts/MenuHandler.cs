@@ -1,7 +1,5 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,11 +8,13 @@ public class MenuHandler : MonoBehaviour
     public GameObject ButtonPrefab;
     public GameObject AdventureTab;
     public GameObject ArmoryTab;
+	public GameObject CraftTab;
 
-    private readonly List<string> Menus = new()
+	private readonly List<string> Menus = new()
     {
         "Adventure",
-        "Armory"
+        "Armory",
+        "Craft"
     };
 
     void Start()
@@ -40,5 +40,6 @@ public class MenuHandler : MonoBehaviour
     {
         AdventureTab.SetActive(name == "Adventure");
 		ArmoryTab.SetActive(name == "Armory");
-    }
+		CraftTab.SetActive(name == "Craft");
+	}
 }
