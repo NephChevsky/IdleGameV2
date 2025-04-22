@@ -1,26 +1,28 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Assets.Scripts.Models;
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Models
+namespace Assets.Scripts.Engines
 {
-	public class Map
+	public static class MapEngine
 	{
-		public int Level { get; set; }
-		public Player Player { get; set; }
-		public List<Enemy> EnemiesToSpawn { get; set; } = new();
-		public List<Enemy> SpawnedEnemies { get; set; } = new();
-		public float DeathTimer { get; set; } = -1f;
-		private float EnemySpawnTimer { get; set; }
+		public static int Level { get; set; }
+		public static Player Player { get; set; }
 
-		public Map(int mapLevel, int playerLevel)
+		public static List<Enemy> EnemiesToSpawn { get; set; } = new();
+		public static List<Enemy> SpawnedEnemies { get; set; } = new();
+
+		public static float DeathTimer { get; set; } = -1f;
+		private static float EnemySpawnTimer { get; set; }
+
+		public static void Init(int mapLevel, int playerLevel)
 		{
 			Player = new(playerLevel);
 			Level = mapLevel;
 			ResetMap();
 		}
 
-		public void Advance()
+		public static void Advance()
 		{
 			if (DeathTimer >= 0f)
 			{
@@ -37,7 +39,7 @@ namespace Assets.Scripts.Models
 			Everyone_Attack();
 		}
 
-		private void SpawnEnemies()
+		private static void SpawnEnemies()
 		{
 			EnemySpawnTimer += 1f / Settings.Game.TickRate;
 			if (EnemySpawnTimer >= (1f * 100f / Settings.Game.TickRate) && EnemiesToSpawn.Count > 0)
@@ -48,18 +50,18 @@ namespace Assets.Scripts.Models
 			}
 		}
 
-		private void Everyone_Move()
+		private static void Everyone_Move()
 		{
 			Player_Move();
 			Enemies_Move();
 		}
 
-		private void Player_Move()
+		private static void Player_Move()
 		{
 			Entity_Move(Player);
 		}
 
-		private void Enemies_Move()
+		private static void Enemies_Move()
 		{
 			foreach (Enemy enemy in SpawnedEnemies)
 			{
@@ -67,7 +69,7 @@ namespace Assets.Scripts.Models
 			}
 		}
 
-		private void Entity_Move(Entity entity)
+		private static void Entity_Move(Entity entity)
 		{
 			int direction = entity is Player ? 1 : -1;
 			Number mouvementSpeed = entity.MovementSpeed;
@@ -111,13 +113,13 @@ namespace Assets.Scripts.Models
 			entity.Position = newPosition;
 		}
 
-		private void Everyone_Attack()
+		private static void Everyone_Attack()
 		{
 			Player_Attack();
 			Enemies_Attack();
 		}
 
-		private void Player_Attack()
+		private static void Player_Attack()
 		{
 			Player.AttackTimer += (1f / Settings.Game.TickRate) * Player.AttackSpeed / 100f;
 			if (Player.AttackTimer >= (1f * 100f / Settings.Game.TickRate) && SpawnedEnemies.Count > 0 && Player.Position + Player.AttackRange / 2500f >= SpawnedEnemies[0].Position)
@@ -153,7 +155,7 @@ namespace Assets.Scripts.Models
 			}
 		}
 
-		private void Enemies_Attack()
+		private static void Enemies_Attack()
 		{
 			for (int i = 0; i < SpawnedEnemies.Count; i++)
 			{
@@ -168,7 +170,7 @@ namespace Assets.Scripts.Models
 			}
 		}
 
-		private bool Entity_Attack(Entity attacker, Entity defender)
+		private static bool Entity_Attack(Entity attacker, Entity defender)
 		{
 			attacker.AttackTimer = 0f;
 			Number dmg = attacker.AttackDamage;
@@ -196,7 +198,7 @@ namespace Assets.Scripts.Models
 			return false;
 		}
 
-		private Number GetAffixTypeBonusFromEquipment(AffixType affixType)
+		private static Number GetAffixTypeBonusFromEquipment(AffixType affixType)
 		{
 			Number value = 0f;
 			foreach (Item item in GameEngine.Equipment)
@@ -212,17 +214,23 @@ namespace Assets.Scripts.Models
 			return value;
 		}
 
-		private Number GetAffixTypeBonusFromAttributes(AffixType affixType)
+		private static Number GetAffixTypeBonusFromAttributes(AffixType affixType)
 		{
 			return GameEngine.AffectedAttributePoints[affixType] / 100f;
 		}
 
-		private void ShowDeathScreen()
+		private static void ShowDeathScreen()
 		{
 			DeathTimer = 0f;
 		}
 
-		private void ResetMap()
+		private static void GoToNextLevel()
+		{
+			Level++;
+			ResetMap();
+		}
+
+		private static void ResetMap()
 		{
 			DeathTimer = -1f;
 			Player.Reset();
@@ -241,12 +249,6 @@ namespace Assets.Scripts.Models
 			Enemy boss = Enemy.GenerateBoss(Level);
 			boss.Id = EnemiesToSpawn.Count;
 			EnemiesToSpawn.Add(boss);
-		}
-
-		private void GoToNextLevel()
-		{
-			Level++;
-			ResetMap();
 		}
 	}
 }

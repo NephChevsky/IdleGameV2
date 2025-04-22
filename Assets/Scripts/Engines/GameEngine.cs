@@ -1,3 +1,4 @@
+using Assets.Scripts.Engines;
 using Assets.Scripts.Models;
 using Newtonsoft.Json;
 using System;
@@ -7,7 +8,6 @@ using UnityEngine;
 
 public static class GameEngine
 {
-	public static Map Map { get; set; }
 	public static List<Item> Equipment { get; set; } = new();
 	public static List<Item> Inventory { get; set; }
 	public static Dictionary<AffixType, int> AffixShards { get; set; } = new();
@@ -90,12 +90,12 @@ public static class GameEngine
 			}
 		}
 
-		Map = new(mapLevel, playerLevel);
+		MapEngine.Init(mapLevel, playerLevel);
 
 		if (PlayerPrefs.HasKey("Map:Player:CurrentXP"))
 		{
 			string json = PlayerPrefs.GetString("Map:Player:CurrentXP");
-			Map.Player.CurrentXP = JsonConvert.DeserializeObject<Number>(json);
+			MapEngine.Player.CurrentXP = JsonConvert.DeserializeObject<Number>(json);
 		}
 
 		AutoSalvageWhite = PlayerPrefs.GetInt("AutoSalvageWhite", 0) != 0;
@@ -108,7 +108,7 @@ public static class GameEngine
     {
 		while (CurrentTime + elapsedTime >= TickTime)
         {
-			Map.Advance();
+			MapEngine.Advance();
 
             SaveTimer += TickTime;
             if (SaveTimer > 30f)
@@ -215,9 +215,9 @@ public static class GameEngine
 
 	private static void Save()
     {
-        PlayerPrefs.SetInt("Map:Level", Map.Level);
-        PlayerPrefs.SetInt("Map:Player:Level", Map.Player.Level);
-		PlayerPrefs.SetString("Map:Player:CurrentXP", JsonConvert.SerializeObject(Map.Player.CurrentXP));
+        PlayerPrefs.SetInt("Map:Level", MapEngine.Level);
+        PlayerPrefs.SetInt("Map:Player:Level", MapEngine.Player.Level);
+		PlayerPrefs.SetString("Map:Player:CurrentXP", JsonConvert.SerializeObject(MapEngine.Player.CurrentXP));
 		PlayerPrefs.SetString("Inventory", JsonConvert.SerializeObject(Inventory));
 		PlayerPrefs.SetString("Equipment", JsonConvert.SerializeObject(Equipment));
 		PlayerPrefs.SetString("AffixShards", JsonConvert.SerializeObject(AffixShards));

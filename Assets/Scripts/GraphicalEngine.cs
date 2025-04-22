@@ -1,3 +1,4 @@
+using Assets.Scripts.Engines;
 using Assets.Scripts.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -31,17 +32,17 @@ public class GraphicalEngine : MonoBehaviour
 
     void Update()
     {
-		MapLevelPlaceHolder.text = GameEngine.Map.Level.ToString();
-		PlayerLevelPlaceHolder.text = GameEngine.Map.Player.Level.ToString();
+		MapLevelPlaceHolder.text = MapEngine.Level.ToString();
+		PlayerLevelPlaceHolder.text = MapEngine.Player.Level.ToString();
 
 		float deathScreenAlphaRatio = 0f;
-		if (GameEngine.Map.DeathTimer >= 0f)
+		if (MapEngine.DeathTimer >= 0f)
 		{
 			DeathScreen.transform.SetAsLastSibling();
 			deathScreenAlphaRatio = 1f;
-			if (GameEngine.Map.DeathTimer <= 0.5f * 100f / Settings.Game.TickRate)
+			if (MapEngine.DeathTimer <= 0.5f * 100f / Settings.Game.TickRate)
 			{
-				deathScreenAlphaRatio = GameEngine.Map.DeathTimer * 2f;
+				deathScreenAlphaRatio = MapEngine.DeathTimer * 2f;
 			}
 		}
 		Image image = DeathScreen.GetComponentInChildren<Image>();
@@ -53,13 +54,13 @@ public class GraphicalEngine : MonoBehaviour
 		color.a = deathScreenAlphaRatio;
 		text.color = color;
 
-		SetEntityPosition(Player, GameEngine.Map.Player.Position);
-		SetEntityLifeRatio(Player, (float) (GameEngine.Map.Player.CurrentHP / GameEngine.Map.Player.MaxHP));
+		SetEntityPosition(Player, MapEngine.Player.Position);
+		SetEntityLifeRatio(Player, (float) (MapEngine.Player.CurrentHP / MapEngine.Player.MaxHP));
 
 		for (int i = 0; i < Enemies.Count; i++)
 		{
 			int id = int.Parse(Enemies[i].name.Split(" ")[1]);
-			Enemy enemy = GameEngine.Map.SpawnedEnemies.Where(x => x.Id == id).FirstOrDefault();
+			Enemy enemy = MapEngine.SpawnedEnemies.Where(x => x.Id == id).FirstOrDefault();
 			if (enemy == null)
 			{
 				Destroy(Enemies[i]);
@@ -68,7 +69,7 @@ public class GraphicalEngine : MonoBehaviour
 			}
 		}
 
-		foreach (Enemy enemy in GameEngine.Map.SpawnedEnemies)
+		foreach (Enemy enemy in MapEngine.SpawnedEnemies)
 		{
 			GameObject enemyGameObject = Enemies.Where(x => x.name == $"Enemy {enemy.Id}").FirstOrDefault();
 			if (enemyGameObject == null)

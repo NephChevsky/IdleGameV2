@@ -1,3 +1,4 @@
+using Assets.Scripts.Engines;
 using Assets.Scripts.Models;
 using System;
 using System.Collections.Generic;
@@ -176,6 +177,6 @@ public class ArmoryHandler : MonoBehaviour
 		MainHand.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.MainHand);
 		OffHand.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.OffHand);
 
-		AttributePointsValue.GetComponent<TMP_Text>().text = (GameEngine.Map.Player.Level - GameEngine.AffectedAttributePoints.Sum(x => x.Value) - 1).ToString();
+		AttributePointsValue.GetComponent<TMP_Text>().text = (MapEngine.Player.Level - GameEngine.AffectedAttributePoints.Sum(x => x.Value) - 1).ToString();
 	}
 }

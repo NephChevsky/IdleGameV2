@@ -1,3 +1,4 @@
+using Assets.Scripts.Engines;
 using Assets.Scripts.Models;
 using System.Linq;
 using TMPro;
@@ -37,7 +38,7 @@ public class AttributeSetterHandler : MonoBehaviour
 
     public void LevelUp()
     {
-		if (GameEngine.AffectedAttributePoints.Sum(x => x.Value) < GameEngine.Map.Player.Level - 1)
+		if (GameEngine.AffectedAttributePoints.Sum(x => x.Value) < MapEngine.Player.Level - 1)
 		{
 			GameEngine.AffectedAttributePoints[AffixType]++;
 			SetValue(GameEngine.AffectedAttributePoints[AffixType]);
