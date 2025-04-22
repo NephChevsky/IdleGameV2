@@ -28,19 +28,19 @@ public class AttributeSetterHandler : MonoBehaviour
 
     public void LevelDown()
     {
-        if (Game.AffectedAttributePoints[AffixType] > 0)
+        if (GameEngine.AffectedAttributePoints[AffixType] > 0)
         {
-			Game.AffectedAttributePoints[AffixType]--;
-            SetValue(Game.AffectedAttributePoints[AffixType]);
+			GameEngine.AffectedAttributePoints[AffixType]--;
+            SetValue(GameEngine.AffectedAttributePoints[AffixType]);
 		}
     }
 
     public void LevelUp()
     {
-		if (Game.AffectedAttributePoints.Sum(x => x.Value) < Game.Map.Player.Level - 1)
+		if (GameEngine.AffectedAttributePoints.Sum(x => x.Value) < GameEngine.Map.Player.Level - 1)
 		{
-			Game.AffectedAttributePoints[AffixType]++;
-			SetValue(Game.AffectedAttributePoints[AffixType]);
+			GameEngine.AffectedAttributePoints[AffixType]++;
+			SetValue(GameEngine.AffectedAttributePoints[AffixType]);
 		}
 	}
 }

@@ -120,15 +120,15 @@ public class ArmoryHandler : MonoBehaviour
 		MainHand.transform.localPosition = new Vector2(xOffset - 104, yOffset - 104 * 3);
 		OffHand.transform.localPosition = new Vector2(xOffset + 104, yOffset - 104 * 3);
 
-		SalvageButton.GetComponent<Button>().onClick.AddListener(Game.ToggleSalvageMode);
-		AutoSalvageWhiteToggle.GetComponent<Toggle>().isOn = Game.AutoSalvageWhite;
-		AutoSalvageGreenToggle.GetComponent<Toggle>().isOn = Game.AutoSalvageGreen;
-		AutoSalvageBlueToggle.GetComponent<Toggle>().isOn = Game.AutoSalvageBlue;
-		AutoSalvagePurpleToggle.GetComponent<Toggle>().isOn = Game.AutoSalvagePurple;
-		AutoSalvageWhiteToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => Game.ToggleAutoSalvageWhite());
-		AutoSalvageGreenToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => Game.ToggleAutoSalvageGreen());
-		AutoSalvageBlueToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => Game.ToggleAutoSalvageBlue());
-		AutoSalvagePurpleToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => Game.ToggleAutoSalvagePurple());
+		SalvageButton.GetComponent<Button>().onClick.AddListener(GameEngine.ToggleSalvageMode);
+		AutoSalvageWhiteToggle.GetComponent<Toggle>().isOn = GameEngine.AutoSalvageWhite;
+		AutoSalvageGreenToggle.GetComponent<Toggle>().isOn = GameEngine.AutoSalvageGreen;
+		AutoSalvageBlueToggle.GetComponent<Toggle>().isOn = GameEngine.AutoSalvageBlue;
+		AutoSalvagePurpleToggle.GetComponent<Toggle>().isOn = GameEngine.AutoSalvagePurple;
+		AutoSalvageWhiteToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => GameEngine.ToggleAutoSalvageWhite());
+		AutoSalvageGreenToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => GameEngine.ToggleAutoSalvageGreen());
+		AutoSalvageBlueToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => GameEngine.ToggleAutoSalvageBlue());
+		AutoSalvagePurpleToggle.GetComponent<Toggle>().onValueChanged.AddListener((value) => GameEngine.ToggleAutoSalvagePurple());
 
 		xOffset = width * 3f / 8f;
 		yOffset = -height / 2 + 200;
@@ -140,7 +140,7 @@ public class ArmoryHandler : MonoBehaviour
 			go.transform.localPosition = new Vector2(xOffset, yOffset);
 			AttributeSetterHandler handler = go.GetComponent<AttributeSetterHandler>();
 			handler.SetName(affix);
-			handler.SetValue(Game.AffectedAttributePoints[affix]);
+			handler.SetValue(GameEngine.AffectedAttributePoints[affix]);
 			AttributeSetters.Add(go);
 			yOffset -= 35;
 		}
@@ -151,10 +151,10 @@ public class ArmoryHandler : MonoBehaviour
         int count = 0;
 		foreach (GameObject item in Inventory)
 		{
-			if (Game.Inventory.Count > count)
+			if (GameEngine.Inventory.Count > count)
 			{
 				ItemHandler itemScript = item.GetComponent<ItemHandler>();
-				itemScript.Item = Game.Inventory[count];
+				itemScript.Item = GameEngine.Inventory[count];
 				itemScript.AllowSalvageMode = true;
 			}
 			else
@@ -164,18 +164,18 @@ public class ArmoryHandler : MonoBehaviour
             count++;
 		}
 
-		Helm.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Helm);
-		Amulet.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Amulet);
-		Gloves.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Gloves);
-		Chest.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Chest);
-		RingL.GetComponent<ItemHandler>().Item = Game.Equipment.Where(x => x.Type == ItemType.Ring).FirstOrDefault();
-		Belt.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Belt);
-		RingR.GetComponent<ItemHandler>().Item = Game.Equipment.Where(x => x.Type == ItemType.Ring).Skip(1).FirstOrDefault();
-		Pants.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Pants);
-		Boots.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.Boots);
-		MainHand.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.MainHand);
-		OffHand.GetComponent<ItemHandler>().Item = Game.Equipment.FirstOrDefault(x => x.Type == ItemType.OffHand);
+		Helm.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Helm);
+		Amulet.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Amulet);
+		Gloves.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Gloves);
+		Chest.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Chest);
+		RingL.GetComponent<ItemHandler>().Item = GameEngine.Equipment.Where(x => x.Type == ItemType.Ring).FirstOrDefault();
+		Belt.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Belt);
+		RingR.GetComponent<ItemHandler>().Item = GameEngine.Equipment.Where(x => x.Type == ItemType.Ring).Skip(1).FirstOrDefault();
+		Pants.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Pants);
+		Boots.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Boots);
+		MainHand.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.MainHand);
+		OffHand.GetComponent<ItemHandler>().Item = GameEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.OffHand);
 
-		AttributePointsValue.GetComponent<TMP_Text>().text = (Game.Map.Player.Level - Game.AffectedAttributePoints.Sum(x => x.Value) - 1).ToString();
+		AttributePointsValue.GetComponent<TMP_Text>().text = (GameEngine.Map.Player.Level - GameEngine.AffectedAttributePoints.Sum(x => x.Value) - 1).ToString();
 	}
 }

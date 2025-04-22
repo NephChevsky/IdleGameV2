@@ -31,17 +31,17 @@ public class GraphicalEngine : MonoBehaviour
 
     void Update()
     {
-		MapLevelPlaceHolder.text = Game.Map.Level.ToString();
-		PlayerLevelPlaceHolder.text = Game.Map.Player.Level.ToString();
+		MapLevelPlaceHolder.text = GameEngine.Map.Level.ToString();
+		PlayerLevelPlaceHolder.text = GameEngine.Map.Player.Level.ToString();
 
 		float deathScreenAlphaRatio = 0f;
-		if (Game.Map.DeathTimer >= 0f)
+		if (GameEngine.Map.DeathTimer >= 0f)
 		{
 			DeathScreen.transform.SetAsLastSibling();
 			deathScreenAlphaRatio = 1f;
-			if (Game.Map.DeathTimer <= 0.5f * 100f / Settings.GameEngine.TickRate)
+			if (GameEngine.Map.DeathTimer <= 0.5f * 100f / Settings.Game.TickRate)
 			{
-				deathScreenAlphaRatio = Game.Map.DeathTimer * 2f;
+				deathScreenAlphaRatio = GameEngine.Map.DeathTimer * 2f;
 			}
 		}
 		Image image = DeathScreen.GetComponentInChildren<Image>();
@@ -53,13 +53,13 @@ public class GraphicalEngine : MonoBehaviour
 		color.a = deathScreenAlphaRatio;
 		text.color = color;
 
-		SetEntityPosition(Player, Game.Map.Player.Position);
-		SetEntityLifeRatio(Player, (float) (Game.Map.Player.CurrentHP / Game.Map.Player.MaxHP));
+		SetEntityPosition(Player, GameEngine.Map.Player.Position);
+		SetEntityLifeRatio(Player, (float) (GameEngine.Map.Player.CurrentHP / GameEngine.Map.Player.MaxHP));
 
 		for (int i = 0; i < Enemies.Count; i++)
 		{
 			int id = int.Parse(Enemies[i].name.Split(" ")[1]);
-			Enemy enemy = Game.Map.SpawnedEnemies.Where(x => x.Id == id).FirstOrDefault();
+			Enemy enemy = GameEngine.Map.SpawnedEnemies.Where(x => x.Id == id).FirstOrDefault();
 			if (enemy == null)
 			{
 				Destroy(Enemies[i]);
@@ -68,7 +68,7 @@ public class GraphicalEngine : MonoBehaviour
 			}
 		}
 
-		foreach (Enemy enemy in Game.Map.SpawnedEnemies)
+		foreach (Enemy enemy in GameEngine.Map.SpawnedEnemies)
 		{
 			GameObject enemyGameObject = Enemies.Where(x => x.name == $"Enemy {enemy.Id}").FirstOrDefault();
 			if (enemyGameObject == null)

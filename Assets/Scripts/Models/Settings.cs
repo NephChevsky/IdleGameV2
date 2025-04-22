@@ -8,10 +8,10 @@ namespace Assets.Scripts.Models
 {
 	public static class Settings
 	{
-		public static GameEngine GameEngine { get; set; } = new();
+		public static Game Game { get; set; } = new();
 	}
 
-	public class GameEngine
+	public class Game
 	{
 		public int TickRate = 1000;
 		public float EntityCollisionOffset = 0.035f;

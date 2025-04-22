@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public static class Game
+public static class GameEngine
 {
 	public static Map Map { get; set; }
 	public static List<Item> Equipment { get; set; } = new();
@@ -13,7 +13,7 @@ public static class Game
 	public static Dictionary<AffixType, int> AffixShards { get; set; } = new();
 	public static Dictionary<AffixType, int> AffectedAttributePoints { get; set; } = new();
 
-    private static float TickTime = 1f / Settings.GameEngine.TickRate;
+    private static float TickTime = 1f / Settings.Game.TickRate;
     private static float CurrentTime { get; set; }
     private static float SaveTimer { get; set; }
 	public static bool SalvageMode { get; private set; }
@@ -25,7 +25,7 @@ public static class Game
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
 	static void ResetStatics()
 	{
-		TickTime = 1f / Settings.GameEngine.TickRate;
+		TickTime = 1f / Settings.Game.TickRate;
 		CurrentTime = 0f;
 		SaveTimer = 0f;
 

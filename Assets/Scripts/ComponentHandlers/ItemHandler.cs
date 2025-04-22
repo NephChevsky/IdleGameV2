@@ -31,7 +31,7 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 		{
 			Image panel = GetComponentInChildren<Image>();
 
-			if (Game.SalvageMode && AllowSalvageMode)
+			if (GameEngine.SalvageMode && AllowSalvageMode)
 			{
 				panel.color = new Color(1f, 0f, 0f);
 			}
@@ -120,7 +120,7 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 				mainContent.Add($"{affix.Type}: +{affix.Value * 100}%");
 			}
 			List<string> secondContent = new();
-			Item equippedItem = Game.Equipment.Where(x => x.Type == Item.Type).FirstOrDefault();
+			Item equippedItem = GameEngine.Equipment.Where(x => x.Type == Item.Type).FirstOrDefault();
 			if (equippedItem != null && Item.Id != equippedItem.Id)
 			{
 				foreach (Affix affix in equippedItem.Affixes)
@@ -146,13 +146,13 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 				DoubleClickTimer = -1f;
 				TooltipHandler._instance.HideTooltip();
 
-				if (Game.SalvageMode)
+				if (GameEngine.SalvageMode)
 				{
-					Game.SalvageItem(Item);
+					GameEngine.SalvageItem(Item);
 				}
 				else
 				{
-					Game.EquipOrUnequipItem(Item);
+					GameEngine.EquipOrUnequipItem(Item);
 				}
 			}
 			else

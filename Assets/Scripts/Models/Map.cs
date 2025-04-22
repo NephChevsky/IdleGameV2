@@ -24,8 +24,8 @@ namespace Assets.Scripts.Models
 		{
 			if (DeathTimer >= 0f)
 			{
-				DeathTimer += 1f / Settings.GameEngine.TickRate;
-				if (DeathTimer > 3f * 100f / Settings.GameEngine.TickRate)
+				DeathTimer += 1f / Settings.Game.TickRate;
+				if (DeathTimer > 3f * 100f / Settings.Game.TickRate)
 				{
 					ResetMap();
 				}
@@ -39,8 +39,8 @@ namespace Assets.Scripts.Models
 
 		private void SpawnEnemies()
 		{
-			EnemySpawnTimer += 1f / Settings.GameEngine.TickRate;
-			if (EnemySpawnTimer >= (1f * 100f / Settings.GameEngine.TickRate) && EnemiesToSpawn.Count > 0)
+			EnemySpawnTimer += 1f / Settings.Game.TickRate;
+			if (EnemySpawnTimer >= (1f * 100f / Settings.Game.TickRate) && EnemiesToSpawn.Count > 0)
 			{
 				SpawnedEnemies.Add(EnemiesToSpawn[0]);
 				EnemiesToSpawn.RemoveAt(0);
@@ -89,22 +89,22 @@ namespace Assets.Scripts.Models
 				newPosition = 0f;
 			}
 
-			if (entity is Player && SpawnedEnemies.Count > 0 && newPosition >= SpawnedEnemies[0].Position - Settings.GameEngine.EntityCollisionOffset)
+			if (entity is Player && SpawnedEnemies.Count > 0 && newPosition >= SpawnedEnemies[0].Position - Settings.Game.EntityCollisionOffset)
 			{
-				newPosition = SpawnedEnemies[0].Position - Settings.GameEngine.EntityCollisionOffset;
+				newPosition = SpawnedEnemies[0].Position - Settings.Game.EntityCollisionOffset;
 			}
 
 			if (entity is Enemy enemy)
 			{
-				if (newPosition <= Player.Position + Settings.GameEngine.EntityCollisionOffset)
+				if (newPosition <= Player.Position + Settings.Game.EntityCollisionOffset)
 				{
-					newPosition = Player.Position + Settings.GameEngine.EntityCollisionOffset;
+					newPosition = Player.Position + Settings.Game.EntityCollisionOffset;
 				}
 
 				int index = SpawnedEnemies.IndexOf(enemy);
-				if (index > 0 && newPosition <= SpawnedEnemies[index - 1].Position + Settings.GameEngine.EntityCollisionOffset)
+				if (index > 0 && newPosition <= SpawnedEnemies[index - 1].Position + Settings.Game.EntityCollisionOffset)
 				{
-					newPosition = SpawnedEnemies[index - 1].Position + Settings.GameEngine.EntityCollisionOffset;
+					newPosition = SpawnedEnemies[index - 1].Position + Settings.Game.EntityCollisionOffset;
 				}
 			}
 
@@ -119,8 +119,8 @@ namespace Assets.Scripts.Models
 
 		private void Player_Attack()
 		{
-			Player.AttackTimer += (1f / Settings.GameEngine.TickRate) * Player.AttackSpeed / 100f;
-			if (Player.AttackTimer >= (1f * 100f / Settings.GameEngine.TickRate) && SpawnedEnemies.Count > 0 && Player.Position + Player.AttackRange / 2500f >= SpawnedEnemies[0].Position)
+			Player.AttackTimer += (1f / Settings.Game.TickRate) * Player.AttackSpeed / 100f;
+			if (Player.AttackTimer >= (1f * 100f / Settings.Game.TickRate) && SpawnedEnemies.Count > 0 && Player.Position + Player.AttackRange / 2500f >= SpawnedEnemies[0].Position)
 			{
 				if (Entity_Attack(Player, SpawnedEnemies[0]))
 				{
@@ -134,13 +134,13 @@ namespace Assets.Scripts.Models
 					if (drop)
 					{
 						Item item = Item.Generate();
-						if (Game.AutoSalvageWhite && item.Affixes.Count == 1 || Game.AutoSalvageGreen && item.Affixes.Count == 2 || Game.AutoSalvageBlue && item.Affixes.Count == 3 || Game.AutoSalvagePurple && item.Affixes.Count == 4)
+						if (GameEngine.AutoSalvageWhite && item.Affixes.Count == 1 || GameEngine.AutoSalvageGreen && item.Affixes.Count == 2 || GameEngine.AutoSalvageBlue && item.Affixes.Count == 3 || GameEngine.AutoSalvagePurple && item.Affixes.Count == 4)
 						{
-							Game.SalvageItem(item);
+							GameEngine.SalvageItem(item);
 						}
-						else if (Game.Inventory.Count < 90)
+						else if (GameEngine.Inventory.Count < 90)
 						{
-							Game.Inventory.Add(item);
+							GameEngine.Inventory.Add(item);
 						}
 					}
 
@@ -157,8 +157,8 @@ namespace Assets.Scripts.Models
 		{
 			for (int i = 0; i < SpawnedEnemies.Count; i++)
 			{
-				SpawnedEnemies[i].AttackTimer += (1f / Settings.GameEngine.TickRate) * Player.AttackSpeed / 100f;
-				if (SpawnedEnemies[i].AttackTimer >= (1f * 100f / Settings.GameEngine.TickRate) && SpawnedEnemies[i].Position - SpawnedEnemies[i].AttackRange / 2500f <= Player.Position)
+				SpawnedEnemies[i].AttackTimer += (1f / Settings.Game.TickRate) * Player.AttackSpeed / 100f;
+				if (SpawnedEnemies[i].AttackTimer >= (1f * 100f / Settings.Game.TickRate) && SpawnedEnemies[i].Position - SpawnedEnemies[i].AttackRange / 2500f <= Player.Position)
 				{
 					if (Entity_Attack(SpawnedEnemies[i], Player))
 					{
@@ -199,7 +199,7 @@ namespace Assets.Scripts.Models
 		private Number GetAffixTypeBonusFromEquipment(AffixType affixType)
 		{
 			Number value = 0f;
-			foreach (Item item in Game.Equipment)
+			foreach (Item item in GameEngine.Equipment)
 			{
 				foreach (Affix affix in item.Affixes)
 				{
@@ -214,7 +214,7 @@ namespace Assets.Scripts.Models
 
 		private Number GetAffixTypeBonusFromAttributes(AffixType affixType)
 		{
-			return Game.AffectedAttributePoints[affixType] / 100f;
+			return GameEngine.AffectedAttributePoints[affixType] / 100f;
 		}
 
 		private void ShowDeathScreen()
@@ -228,7 +228,7 @@ namespace Assets.Scripts.Models
 			Player.Reset();
 			EnemiesToSpawn.Clear();
 			SpawnedEnemies.Clear();
-			EnemySpawnTimer = 1f * 100f / Settings.GameEngine.TickRate;
+			EnemySpawnTimer = 1f * 100f / Settings.Game.TickRate;
 
 			int maxEnemy = 9 + Level / 10;
 			for (int i = 0; i < maxEnemy; i++)
