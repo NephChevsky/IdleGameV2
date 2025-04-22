@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GraphicalEngine : MonoBehaviour
+public class AdventureHandler : MonoBehaviour
 {
     public GameObject EntityPrefab;
 	public TMP_Text MapLevelPlaceHolder;

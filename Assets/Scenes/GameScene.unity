@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 200549377}
   - component: {fileID: 200549379}
   m_Layer: 0
-  m_Name: GraphicalPanel
+  m_Name: AdventurePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
