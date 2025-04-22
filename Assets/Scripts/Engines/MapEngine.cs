@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Models;
+using Assets.Scripts.Models.Items;
+using Assets.Scripts.Models.Maps;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,17 +9,17 @@ namespace Assets.Scripts.Engines
 	public static class MapEngine
 	{
 		public static int Level { get; set; }
-		public static Player Player { get; set; }
+		public static PlayerEntity Player { get; set; }
 
-		public static List<Enemy> EnemiesToSpawn { get; set; } = new();
-		public static List<Enemy> SpawnedEnemies { get; set; } = new();
+		public static List<EnemyEntity> EnemiesToSpawn { get; set; } = new();
+		public static List<EnemyEntity> SpawnedEnemies { get; set; } = new();
 
 		public static float DeathTimer { get; set; } = -1f;
 		private static float EnemySpawnTimer { get; set; }
 
 		public static void Init()
 		{
-			Player = new(PlayerEngine.Level);
+			Player = new();
 			Level = PlayerPrefs.GetInt("Map:Level", 1);
 			ResetMap();
 		}
@@ -63,7 +65,7 @@ namespace Assets.Scripts.Engines
 
 		private static void Enemies_Move()
 		{
-			foreach (Enemy enemy in SpawnedEnemies)
+			foreach (EnemyEntity enemy in SpawnedEnemies)
 			{
 				Entity_Move(enemy);
 			}
@@ -71,15 +73,15 @@ namespace Assets.Scripts.Engines
 
 		private static void Entity_Move(Entity entity)
 		{
-			int direction = entity is Player ? 1 : -1;
-			Number mouvementSpeed = entity.MovementSpeed;
-			Number mouvementSpeedBonus = 0;
-			if (entity is Player)
+			int direction = entity is PlayerEntity ? 1 : -1;
+			Number movementSpeed = entity.MovementSpeed;
+			Number movementSpeedBonus = 0;
+			if (entity is PlayerEntity)
 			{
-				mouvementSpeedBonus = PlayerEngine.GetAffixTypeBonusFromEquipment(AffixType.MovementSpeed);
-				mouvementSpeedBonus += PlayerEngine.GetAffixTypeBonusFromAttributes(AffixType.MovementSpeed);
+				movementSpeedBonus = PlayerEngine.GetAffixTypeBonusFromEquipment(AffixType.MovementSpeed);
+				movementSpeedBonus += PlayerEngine.GetAffixTypeBonusFromAttributes(AffixType.MovementSpeed);
 			}
-			float newPosition = entity.Position + direction * mouvementSpeed * (1 + mouvementSpeedBonus) / 100000f;
+			float newPosition = entity.Position + direction * movementSpeed * (1 + movementSpeedBonus) / 100000f;
 
 			if (newPosition > 1f)
 			{
@@ -91,12 +93,12 @@ namespace Assets.Scripts.Engines
 				newPosition = 0f;
 			}
 
-			if (entity is Player && SpawnedEnemies.Count > 0 && newPosition >= SpawnedEnemies[0].Position - Settings.Game.EntityCollisionOffset)
+			if (entity is PlayerEntity && SpawnedEnemies.Count > 0 && newPosition >= SpawnedEnemies[0].Position - Settings.Game.EntityCollisionOffset)
 			{
 				newPosition = SpawnedEnemies[0].Position - Settings.Game.EntityCollisionOffset;
 			}
 
-			if (entity is Enemy enemy)
+			if (entity is EnemyEntity enemy)
 			{
 				if (newPosition <= Player.Position + Settings.Game.EntityCollisionOffset)
 				{
@@ -171,14 +173,14 @@ namespace Assets.Scripts.Engines
 			attacker.AttackTimer = 0f;
 			Number dmg = attacker.AttackDamage;
 			Number dmgBonus = 0;
-			if (attacker is Player)
+			if (attacker is PlayerEntity)
 			{
 				dmgBonus += PlayerEngine.GetAffixTypeBonusFromEquipment(AffixType.Attack);
 				dmgBonus += PlayerEngine.GetAffixTypeBonusFromAttributes(AffixType.Attack);
 			}
 			Number hpBonus = 0;
 			Number defenseBonus = 0;
-			if (defender is Player)
+			if (defender is PlayerEntity)
 			{
 				hpBonus = PlayerEngine.GetAffixTypeBonusFromEquipment(AffixType.HP);
 				hpBonus += PlayerEngine.GetAffixTypeBonusFromAttributes(AffixType.HP);
@@ -208,7 +210,8 @@ namespace Assets.Scripts.Engines
 		private static void ResetMap()
 		{
 			DeathTimer = -1f;
-			Player.Reset();
+			Player.CurrentHP = new(Player.MaxHP);
+			Player.Position = 0;
 			EnemiesToSpawn.Clear();
 			SpawnedEnemies.Clear();
 			EnemySpawnTimer = 1f * 100f / Settings.Game.TickRate;
@@ -216,14 +219,30 @@ namespace Assets.Scripts.Engines
 			int maxEnemy = 9 + Level / 10;
 			for (int i = 0; i < maxEnemy; i++)
 			{
-				Enemy enemy = Enemy.GenerateEnemy(Level);
+				EnemyEntity enemy = GenerateEnemy(Level);
 				enemy.Id = i;
 				EnemiesToSpawn.Add(enemy);
 			}
 
-			Enemy boss = Enemy.GenerateBoss(Level);
+			EnemyEntity boss = GenerateBoss(Level);
 			boss.Id = EnemiesToSpawn.Count;
 			EnemiesToSpawn.Add(boss);
+		}
+
+		private static EnemyEntity GenerateEnemy(int level)
+		{
+			Number hp = 1 * Mathf.Pow(1.03f, level - 1);
+			Number attackDamage = 1 * Mathf.Pow(1.02f, level - 1);
+			Number xpOnKill = 1 * (1 + (level - 1) * 0.1f);
+			int movementSpeed = 100;
+			EnemyEntity enemy = new(hp, attackDamage, xpOnKill, movementSpeed);
+			return enemy;
+		}
+
+		private static EnemyEntity GenerateBoss(int level)
+		{
+			EnemyEntity boss = new(5 * Mathf.Pow(1.03f, level - 1), 5 * Mathf.Pow(1.02f, level - 1), 5 * (1 + (level - 1) * 0.1), 0);
+			return boss;
 		}
 
 		public static void Save()

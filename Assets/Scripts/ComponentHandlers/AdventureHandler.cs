@@ -1,5 +1,6 @@
 using Assets.Scripts.Engines;
 using Assets.Scripts.Models;
+using Assets.Scripts.Models.Maps;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -59,7 +60,7 @@ public class AdventureHandler : MonoBehaviour
 		for (int i = 0; i < Enemies.Count; i++)
 		{
 			int id = int.Parse(Enemies[i].name.Split(" ")[1]);
-			Enemy enemy = MapEngine.SpawnedEnemies.Where(x => x.Id == id).FirstOrDefault();
+			EnemyEntity enemy = MapEngine.SpawnedEnemies.Where(x => x.Id == id).FirstOrDefault();
 			if (enemy == null)
 			{
 				Destroy(Enemies[i]);
@@ -68,7 +69,7 @@ public class AdventureHandler : MonoBehaviour
 			}
 		}
 
-		foreach (Enemy enemy in MapEngine.SpawnedEnemies)
+		foreach (EnemyEntity enemy in MapEngine.SpawnedEnemies)
 		{
 			GameObject enemyGameObject = Enemies.Where(x => x.name == $"Enemy {enemy.Id}").FirstOrDefault();
 			if (enemyGameObject == null)
