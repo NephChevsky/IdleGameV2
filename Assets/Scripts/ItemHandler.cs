@@ -1,6 +1,7 @@
 using Assets.Scripts.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -113,12 +114,22 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	{
 		if (Item != null)
 		{
-			List<string> content = new();
+			List<string> mainContent = new();
 			foreach (Affix affix in Item.Affixes)
 			{
-				content.Add($"{affix.Type}: +{affix.Value * 100}%");
+				mainContent.Add($"{affix.Type}: +{affix.Value * 100}%");
 			}
-			TooltipHandler._instance.SetAndShowTooltip(content);
+			List<string> secondContent = new();
+			Item equippedItem = Game.Equipment.Where(x => x.Type == Item.Type).FirstOrDefault();
+			if (equippedItem != null && Item.Id != equippedItem.Id)
+			{
+				foreach (Affix affix in equippedItem.Affixes)
+				{
+					secondContent.Add($"{affix.Type}: +{affix.Value * 100}%");
+				}
+			}
+
+			TooltipHandler._instance.SetAndShowTooltip(mainContent, secondContent, "Equipped");
 		}
 	}
 	public void OnPointerExit(PointerEventData eventData)
@@ -133,6 +144,8 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 			if (DoubleClickTimer >= 0f && DoubleClickTimer <= 0.5f)
 			{
 				DoubleClickTimer = -1f;
+				TooltipHandler._instance.HideTooltip();
+
 				if (Game.SalvageMode)
 				{
 					Game.SalvageItem(Item);

@@ -5,10 +5,13 @@ using UnityEngine;
 public class TooltipHandler : MonoBehaviour
 {
 	public static TooltipHandler _instance;
+	public GameObject Second;
+	public GameObject SecondHeader;
 
 	private float VisibilityTimer = 0f;
 
-	private readonly List<GameObject> Lines = new();
+	private readonly List<GameObject> MainLines = new();
+	private readonly List<GameObject> SecondLines = new();
 
 	private void Awake()
 	{
@@ -47,14 +50,45 @@ public class TooltipHandler : MonoBehaviour
 		}
 	}
 
-	public void SetAndShowTooltip(List<string> content)
+	public void SetAndShowTooltip(List<string> mainContent, List<string> secondContent = null, string secondHeaderText = null)
 	{
 		VisibilityTimer = 0f;
 		transform.SetAsLastSibling();
 		gameObject.SetActive(true);
 		transform.localPosition = new Vector2(-1000, -1000);
 
-		for (int i = 0; i < content.Count; i++)
+		RectTransform rt = GetComponent<RectTransform>();
+
+		if (secondContent == null || secondContent.Count == 0)
+		{
+			Second.SetActive(false);
+			SecondHeader.SetActive(false);
+		}
+		else
+		{
+			Second.SetActive(true);
+			SecondHeader.SetActive(!string.IsNullOrEmpty(secondHeaderText));
+			SecondHeader.GetComponentInChildren<TMP_Text>().text = secondHeaderText;
+
+			for (int i = 0; i < secondContent.Count; i++)
+			{
+				GameObject go = new($"Line {i}");
+				go.transform.SetParent(transform);
+				go.transform.localScale = Vector3.one;
+				go.transform.localPosition = new Vector2(0, 150 - i * 50);
+
+				TextMeshProUGUI text = go.AddComponent<TextMeshProUGUI>();
+				text.rectTransform.anchoredPosition = new Vector2(0, 0);
+				text.rectTransform.sizeDelta = new Vector2(240, 25);
+				text.transform.localPosition = new Vector2( rt.rect.width / 4, 50 - i * 25);
+				text.text = secondContent[i];
+				text.fontSize = 20;
+				text.verticalAlignment = VerticalAlignmentOptions.Middle;
+				MainLines.Add(go);
+			}
+		}
+
+		for (int i = 0; i < mainContent.Count; i++)
 		{
 			GameObject go = new($"Line {i}");
 			go.transform.SetParent(transform);
@@ -64,21 +98,26 @@ public class TooltipHandler : MonoBehaviour
 			TextMeshProUGUI text = go.AddComponent<TextMeshProUGUI>();
 			text.rectTransform.anchoredPosition = new Vector2(0, 0);
 			text.rectTransform.sizeDelta = new Vector2(240, 25);
-			text.transform.localPosition = new Vector2(0, 50 - i * 25);
-			text.text = content[i];
+			text.transform.localPosition = new Vector2(-rt.rect.width / 4, 50 - i * 25);
+			text.text = mainContent[i];
 			text.fontSize = 20;
 			text.verticalAlignment = VerticalAlignmentOptions.Middle;
-			Lines.Add(go);
+			MainLines.Add(go);
 		}
 	}
 
 	public void HideTooltip()
 	{
-		Lines.ForEach(line =>
+		MainLines.ForEach(line =>
 		{
 			Destroy(line);
 		});
-		Lines.Clear();
+		SecondLines.ForEach(line =>
+		{
+			Destroy(line);
+		});
+		MainLines.Clear();
+		SecondLines.Clear();
 		gameObject.SetActive(false);
 	}
 
@@ -98,9 +137,9 @@ public class TooltipHandler : MonoBehaviour
 				yPos = localPoint.y - rt.rect.height / 2 - 5;
 			}
 
-			if (xPos + rt.rect.width / 2 > canvasRT.rect.width / 2 - 5)
+			if (xPos + (Second.activeInHierarchy ? rt.rect.width / 2 : 0) > canvasRT.rect.width / 2 - 5)
 			{
-				xPos = localPoint.x - rt.rect.width / 2 - 5;
+				xPos = localPoint.x - (Second.activeInHierarchy ? rt.rect.width / 2 : 0) - 5;
 			}
 
 			transform.localPosition = new Vector2(xPos, yPos);
