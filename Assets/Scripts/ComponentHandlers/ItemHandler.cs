@@ -32,7 +32,7 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 		{
 			Image panel = GetComponentInChildren<Image>();
 
-			if (GameEngine.SalvageMode && AllowSalvageMode)
+			if (GraphicalEngine.SalvageMode && AllowSalvageMode)
 			{
 				panel.color = new Color(1f, 0f, 0f);
 			}
@@ -147,7 +147,7 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 				DoubleClickTimer = -1f;
 				TooltipHandler._instance.HideTooltip();
 
-				if (GameEngine.SalvageMode)
+				if (GraphicalEngine.SalvageMode)
 				{
 					GameEngine.SalvageItem(Item);
 				}

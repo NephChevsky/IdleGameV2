@@ -14,7 +14,7 @@ public static class GameEngine
     private static float TickTime = 1f / Settings.Game.TickRate;
     private static float CurrentTime { get; set; }
     private static float SaveTimer { get; set; }
-	public static bool SalvageMode { get; private set; }
+
 	public static bool AutoSalvageWhite { get; private set; }
 	public static bool AutoSalvageGreen { get; private set; }
 	public static bool AutoSalvageBlue { get; private set; }
@@ -27,7 +27,6 @@ public static class GameEngine
 		CurrentTime = 0f;
 		SaveTimer = 0f;
 
-		SalvageMode = false;
 		AutoSalvageWhite = false;
 		AutoSalvageGreen = false;
 		AutoSalvageBlue = false;
@@ -61,6 +60,7 @@ public static class GameEngine
 
 		PlayerEngine.Init();
 		MapEngine.Init();
+		GraphicalEngine.Init();
 
 		AutoSalvageWhite = PlayerPrefs.GetInt("AutoSalvageWhite", 0) != 0;
 		AutoSalvageGreen = PlayerPrefs.GetInt("AutoSalvageGreen", 0) != 0;
@@ -150,11 +150,6 @@ public static class GameEngine
 			AffixShards[affix.Type]++;
 		}
 		Inventory.Remove(item);
-	}
-
-	public static void ToggleSalvageMode()
-	{
-		SalvageMode = !SalvageMode;
 	}
 
 	public static void ToggleAutoSalvageWhite()

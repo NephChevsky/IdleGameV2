@@ -121,7 +121,7 @@ public class ArmoryHandler : MonoBehaviour
 		MainHand.transform.localPosition = new Vector2(xOffset - 104, yOffset - 104 * 3);
 		OffHand.transform.localPosition = new Vector2(xOffset + 104, yOffset - 104 * 3);
 
-		SalvageButton.GetComponent<Button>().onClick.AddListener(GameEngine.ToggleSalvageMode);
+		SalvageButton.GetComponent<Button>().onClick.AddListener(GraphicalEngine.ToggleSalvageMode);
 		AutoSalvageWhiteToggle.GetComponent<Toggle>().isOn = GameEngine.AutoSalvageWhite;
 		AutoSalvageGreenToggle.GetComponent<Toggle>().isOn = GameEngine.AutoSalvageGreen;
 		AutoSalvageBlueToggle.GetComponent<Toggle>().isOn = GameEngine.AutoSalvageBlue;
