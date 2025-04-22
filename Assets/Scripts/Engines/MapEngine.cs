@@ -229,6 +229,7 @@ namespace Assets.Scripts.Engines
 		public static void Save()
 		{
 			PlayerPrefs.SetInt("Map:Level", Level);
+			PlayerPrefs.Save();
 		}
 	}
 }

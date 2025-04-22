@@ -108,6 +108,7 @@ namespace Assets.Scripts.Engines
 			PlayerPrefs.SetString("Player:CurrentXP", JsonConvert.SerializeObject(CurrentXP));
 			PlayerPrefs.SetString("Player:Equipment", JsonConvert.SerializeObject(Equipment));
 			PlayerPrefs.SetString("Player:AffectedAttributePoints", JsonConvert.SerializeObject(AffectedAttributePoints));
+			PlayerPrefs.Save();
 		}
 	}
 }
