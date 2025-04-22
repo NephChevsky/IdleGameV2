@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public Item Item;
 	public Sprite Helm;
@@ -21,7 +21,10 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 	public Sprite MainHand;
 	public Image Image;
 
-	public bool AllowSalvageMode { get; set; }
+	public MenuHandler MenuHandler;
+
+	public bool AllowSalvageMode { get; set; } = false;
+	public bool ShowToolTip { get; set; } = false;
 
 	private float DoubleClickTimer = -1f;
 
@@ -112,7 +115,7 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
-		if (Item != null)
+		if (ShowToolTip && Item != null)
 		{
 			List<string> mainContent = new();
 			foreach (Affix affix in Item.Affixes)
@@ -137,11 +140,17 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 		TooltipHandler._instance.HideTooltip();
 	}
 
-	public void OnPointerDown(PointerEventData eventData)
+	public void OnPointerClick(PointerEventData eventData)
 	{
 		if (Item != null)
 		{
-			if (DoubleClickTimer >= 0f && DoubleClickTimer <= 0.5f)
+			if (GraphicalEngine.SelectItemToCraftMode)
+			{
+				GraphicalEngine.ItemToCraft = Item.Id;
+				GraphicalEngine.SelectItemToCraftMode = false;
+				GraphicalEngine.SwitchToTab("Craft");
+			}
+			else if (DoubleClickTimer >= 0f && DoubleClickTimer <= 0.5f)
 			{
 				DoubleClickTimer = -1f;
 				TooltipHandler._instance.HideTooltip();

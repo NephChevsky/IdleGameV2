@@ -36,8 +36,8 @@ public static class GameEngine
 		AffixShards = new();
 	}
 
-	public static void Init()
-    {
+	public static void Init(GameObject adventureTab, GameObject armoryTab, GameObject craftTab)
+	{
 		if (PlayerPrefs.HasKey("Inventory"))
 		{
 			string json = PlayerPrefs.GetString("Inventory");
@@ -60,7 +60,7 @@ public static class GameEngine
 
 		PlayerEngine.Init();
 		MapEngine.Init();
-		GraphicalEngine.Init();
+		GraphicalEngine.Init(adventureTab, armoryTab, craftTab);
 
 		AutoSalvageWhite = PlayerPrefs.GetInt("AutoSalvageWhite", 0) != 0;
 		AutoSalvageGreen = PlayerPrefs.GetInt("AutoSalvageGreen", 0) != 0;
@@ -179,6 +179,7 @@ public static class GameEngine
 
 		PlayerPrefs.SetString("Inventory", JsonConvert.SerializeObject(Inventory));
 		PlayerPrefs.SetString("AffixShards", JsonConvert.SerializeObject(AffixShards));
+
 		PlayerPrefs.SetInt("AutoSalvageWhite", AutoSalvageWhite ? 1 : 0);
 		PlayerPrefs.SetInt("AutoSalvageGreen", AutoSalvageGreen ? 1 : 0);
 		PlayerPrefs.SetInt("AutoSalvageBlue", AutoSalvageBlue ? 1 : 0);

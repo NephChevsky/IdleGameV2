@@ -157,6 +157,7 @@ public class ArmoryHandler : MonoBehaviour
 				ItemHandler itemScript = item.GetComponent<ItemHandler>();
 				itemScript.Item = GameEngine.Inventory[count];
 				itemScript.AllowSalvageMode = true;
+				itemScript.ShowToolTip = true;
 			}
 			else
 			{

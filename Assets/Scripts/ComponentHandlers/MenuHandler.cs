@@ -1,3 +1,4 @@
+using Assets.Scripts.Engines;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -29,17 +30,8 @@ public class MenuHandler : MonoBehaviour
             menuGameObject.transform.SetParent(transform);
             menuGameObject.transform.localScale = Vector3.one;
             menuGameObject.transform.localPosition = new Vector2(-width / 2 + offset, 0);
-            menuGameObject.GetComponent<Button>().onClick.AddListener(() => SwitchToTab(menu));
+            menuGameObject.GetComponent<Button>().onClick.AddListener(() => GraphicalEngine.SwitchToTab(menu));
             offset += 96;
         }
-
-		SwitchToTab("Adventure");
-	}
-
-    private void SwitchToTab(string name)
-    {
-        AdventureTab.SetActive(name == "Adventure");
-		ArmoryTab.SetActive(name == "Armory");
-		CraftTab.SetActive(name == "Craft");
 	}
 }

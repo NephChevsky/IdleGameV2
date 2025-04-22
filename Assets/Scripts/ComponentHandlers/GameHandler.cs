@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class GameHandler : MonoBehaviour
 {
-    void Start()
+    public GameObject AdventureTab;
+    public GameObject ArmoryTab;
+    public GameObject CraftTab;
+
+	void Start()
     {
-        GameEngine.Init();
+        GameEngine.Init(AdventureTab, ArmoryTab, CraftTab);
 	}
 
     void FixedUpdate()
