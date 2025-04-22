@@ -16,10 +16,12 @@ public class CraftHandler : MonoBehaviour
 	public GameObject Affix4Text;
 	public GameObject Affix5Text;
 	public GameObject SelectItemToCraftButton;
+	public GameObject DoneButton;
 
     void Start()
     {
         SelectItemToCraftButton.GetComponent<Button>().onClick.AddListener(OnClick_SelectItemToCraft);
+		DoneButton.GetComponent<Button>().onClick.AddListener(OnClick_CraftingDone);
     }
 
     void Update()
@@ -63,6 +65,7 @@ public class CraftHandler : MonoBehaviour
 
 
 				SelectItemToCraftButton.SetActive(false);
+				DoneButton.SetActive(true);
 			}
 			else
 			{
@@ -81,6 +84,7 @@ public class CraftHandler : MonoBehaviour
 			Affix5Text.SetActive(false);
 
 			SelectItemToCraftButton.SetActive(true);
+			DoneButton.SetActive(false);
 		}
     }
 
@@ -89,4 +93,9 @@ public class CraftHandler : MonoBehaviour
         GraphicalEngine.SelectItemToCraftMode = true;
 		GraphicalEngine.SwitchToTab("Armory");
     }
+
+	private void OnClick_CraftingDone()
+	{
+		GraphicalEngine.ItemToCraft = Guid.Empty;
+	}
 }

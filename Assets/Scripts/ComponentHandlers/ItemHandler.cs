@@ -148,6 +148,7 @@ public class ItemHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 			{
 				GraphicalEngine.ItemToCraft = Item.Id;
 				GraphicalEngine.SelectItemToCraftMode = false;
+				TooltipHandler._instance.HideTooltip();
 				GraphicalEngine.SwitchToTab("Craft");
 			}
 			else if (DoubleClickTimer >= 0f && DoubleClickTimer <= 0.5f)
