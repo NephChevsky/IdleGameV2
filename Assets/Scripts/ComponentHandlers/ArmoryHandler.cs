@@ -166,17 +166,49 @@ public class ArmoryHandler : MonoBehaviour
             count++;
 		}
 
-		Helm.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Helm);
-		Amulet.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Amulet);
-		Gloves.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Gloves);
-		Chest.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Chest);
-		RingL.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.Where(x => x.Type == ItemType.Ring).FirstOrDefault();
-		Belt.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Belt);
-		RingR.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.Where(x => x.Type == ItemType.Ring).Skip(1).FirstOrDefault();
-		Pants.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Pants);
-		Boots.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Boots);
-		MainHand.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.MainHand);
-		OffHand.GetComponent<ItemHandler>().Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.OffHand);
+		ItemHandler helmHandler = Helm.GetComponent<ItemHandler>();
+		helmHandler.Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Helm);
+		helmHandler.ShowToolTip = true;
+
+		ItemHandler amuletHandler = Amulet.GetComponent<ItemHandler>();
+		amuletHandler.Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Amulet);
+		amuletHandler.ShowToolTip = true;
+
+		ItemHandler glovesHandler = Gloves.GetComponent<ItemHandler>();
+		glovesHandler.Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Gloves);
+		glovesHandler.ShowToolTip = true;
+
+		ItemHandler chestHandler = Chest.GetComponent<ItemHandler>();
+		chestHandler.Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Chest);
+		chestHandler.ShowToolTip = true;
+
+		ItemHandler ringLHandler = RingL.GetComponent<ItemHandler>();
+		ringLHandler.Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Ring);
+		ringLHandler.ShowToolTip = true;
+
+		ItemHandler beltHandler = Belt.GetComponent<ItemHandler>();
+		beltHandler.Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Belt);
+		beltHandler.ShowToolTip = true;
+
+		ItemHandler ringRHandler = RingR.GetComponent<ItemHandler>();
+		ringRHandler.Item = PlayerEngine.Equipment.Where(x => x.Type == ItemType.Ring).Skip(1).FirstOrDefault();
+		ringRHandler.ShowToolTip = true;
+
+		ItemHandler pantsHandler = Pants.GetComponent<ItemHandler>();
+		pantsHandler.Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Pants);
+		pantsHandler.ShowToolTip = true;
+
+		ItemHandler bootsHandler = Boots.GetComponent<ItemHandler>();
+		bootsHandler.Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.Boots);
+		bootsHandler.ShowToolTip = true;
+
+		ItemHandler mainHandHandler = MainHand.GetComponent<ItemHandler>();
+		mainHandHandler.Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.MainHand);
+		mainHandHandler.ShowToolTip = true;
+
+		ItemHandler offHandHandler = OffHand.GetComponent<ItemHandler>();
+		offHandHandler.Item = PlayerEngine.Equipment.FirstOrDefault(x => x.Type == ItemType.OffHand);
+		offHandHandler.ShowToolTip = true;
 
 		AttributePointsValue.GetComponent<TMP_Text>().text = (PlayerEngine.Level - PlayerEngine.AffectedAttributePoints.Sum(x => x.Value) - 1).ToString();
 	}
